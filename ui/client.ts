@@ -5,15 +5,17 @@ import { registerGqlTag } from 'apollo-client/gql';
 // Polyfill fetch
 import 'whatwg-fetch';
 
-// Globally register gql template literal tag
-registerGqlTag();
+interface Result {
+  id?: string;
+  __typename?: string;
+}
 
 export const client = new ApolloClient({
   networkInterface: createNetworkInterface('/graphql', {
     credentials: 'same-origin',
   }),
   queryTransformer: addTypenameToSelectionSet,
-  dataIdFromObject: (result) => {
+  dataIdFromObject: (result: Result) => {
     if (result.id && result.__typename) {
       return result.__typename + result.id;
     }
