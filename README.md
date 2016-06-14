@@ -1,4 +1,4 @@
-# GitHunt
+# GitHunt for Angular2
 
 A full-stack Apollo Client and Server example app.
 
@@ -8,7 +8,7 @@ Demonstrates:
 
 1. GraphQL schema, resolvers, models, and connectors to read from two different data sources, GitHub REST API and SQL
 2. Web server with authentication and basic authorization using Express, Passport, and Apollo Server
-3. React app with React Router and Apollo Client that displays data and does some writes
+3. Angular2 app with Angular2 Router and Apollo Client that displays data and does some writes
 
 As Apollo Client and Server gain more features, we'll add them to this app. Please submit a pull request if you see anything that can be improved!
 
@@ -21,8 +21,8 @@ Make sure you have Node.js installed (the app has been tested with Node `4.4.5` 
 ### 2. Clone and install dependencies
 
 ```
-git clone https://github.com/apollostack/GitHunt.git
-cd GitHunt
+git clone https://github.com/kamilkisiela/GitHunt-angular2.git
+cd GitHunt-angular2
 npm install
 ```
 
@@ -126,9 +126,10 @@ Does it demonstrate all of the required features above?
 
 - Apollo server - to put a nice unified API on top of our GitHub and local data
 - Apollo client - to load that data declaratively into our UI
-- React - it's a great way to build UIs, and has the best integration with Apollo and Redux
-- React router - it seems to be the most popular React router today, and has some great hooks and techniques for SSR. It seems like James Baxley has had some success with implementing this stuff already with React Router.
+- Angular2 - it's a great way to build UIs
+- Angular2 Router (DEPRECATED BETA)
 - Webpack - the Meteor build system is by far the most convenient, but comes with a dependency on mongo, its own account system, etc. Since we want to learn how Apollo works without all of these things, we're going to not use it even though it would reduce the complexity of the code.
+- TypeScript - to compile our client code.
 - Babel - to compile our server code.
 - Redux - to manage client side data, perhaps we can also use Redux Form to manage the submission form, but we'll see when we get there.
 - Passport.js for login - this seems to be the most common login solution for Express/Node, and has a great GitHub login solution. Jonas has already written a tutorial for using that with GraphQL.
