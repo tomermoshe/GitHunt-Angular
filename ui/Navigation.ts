@@ -7,10 +7,15 @@ import {
   Router
 } from '@angular/router-deprecated';
 
+import {
+  Profile
+} from './Profile.ts';
+
 @Component({
   selector: 'navigation',
   directives: [
-    RouterLink
+    RouterLink,
+    Profile
   ],
   template: `
   <nav class="navbar navbar-default">
@@ -42,9 +47,7 @@ import {
         </li>
       </ul>
 
-      <p class="navbar-text navbar-right">
-        <a href="/login/github">Log in with GitHub</a>
-      </p>
+      <profile></profile>
     </div>
   </nav>
   `

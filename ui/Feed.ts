@@ -225,8 +225,7 @@ export interface Feed {
         `,
         variables: {
           type: context.type ? context.type.toUpperCase() : 'TOP'
-        },
-        pollInterval: 5000,
+        }
       }
     }
   },
