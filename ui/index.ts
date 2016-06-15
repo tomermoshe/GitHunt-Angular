@@ -23,6 +23,10 @@ import {
   Navigation
 } from './Navigation.ts';
 
+import {
+  NewEntry
+} from './NewEntry.ts';
+
 import './style.css';
 
 @Component({
@@ -41,8 +45,9 @@ import './style.css';
   `
 })
 @RouteConfig([
-  { path: '/', as: 'Index', component: Feed },
-  { path: '/feed/:type', as: 'Feed', component: Feed }
+  { path: '/',            as: 'Index',    component: Feed },
+  { path: '/feed/:type',  as: 'Feed',     component: Feed },
+  { path: '/submit',      as: 'NewEntry', component: NewEntry }
 ])
 class GitHunt {}
 

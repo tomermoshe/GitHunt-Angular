@@ -10,8 +10,7 @@ import {
 } from '@angular/router-deprecated';
 
 import {
-  Apollo,
-  ApolloQueryPipe
+  Apollo
 } from 'angular2-apollo';
 
 import {
@@ -84,6 +83,7 @@ class VoteButtons {
   }
 
   private submitVote(type: string): void {
+    console.log('canVote:', !!this.canVote);
     if (this.canVote === true) {
       this.onVote.emit(type);
     }
@@ -111,7 +111,7 @@ interface onVoteEvent {
         <vote-buttons
           [score]="entry.score"
           [vote]="entry.vote"
-          [canVote]="true"
+          [canVote]="!!currentUser"
           (onVote)="onButtonVote($event)">
         </vote-buttons>
       </div>
@@ -152,6 +152,7 @@ interface onVoteEvent {
 })
 class FeedEntry {
   @Input() entry;
+  @Input() currentUser;
   @Output() onVote: EventEmitter<onVoteEvent> = new EventEmitter();
 
   onButtonVote(type: string): void {
@@ -169,16 +170,17 @@ export interface Feed {
 
 @Component({
   selector: 'feed',
-  pipes: [
-    ApolloQueryPipe
-  ],
   directives: [
-    FeedEntry
+    FeedEntry,
+    Loading
   ],
   template: `
+    <loading *ngIf="data.loading"></loading>
     <feed-entry
-      *ngFor="let entry of feed | async | apolloQuery:'feed'"
+      *ngIf="!data.loading"
+      *ngFor="let entry of data.feed"
       [entry]="entry"
+      [currentUser]="data.currentUser"
       (onVote)="onVote($event)">
     </feed-entry>
   `
@@ -187,9 +189,12 @@ export interface Feed {
   client,
   queries(context: any) {
     return {
-      feed: {
+      data: {
         query: gql`
           query Feed($type: FeedType!) {
+            currentUser {
+              login
+            }
             feed(type: $type) {
               createdAt
               score
@@ -219,7 +224,8 @@ export interface Feed {
         `,
         variables: {
           type: context.type ? context.type.toUpperCase() : 'TOP'
-        }
+        },
+        forceFetch: true,
       }
     }
   },
@@ -240,7 +246,7 @@ export interface Feed {
         variables: {
           repoFullName,
           type,
-        },
+        }
       })
     };
   }
