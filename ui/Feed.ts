@@ -176,13 +176,14 @@ export interface Feed {
   ],
   template: `
     <loading *ngIf="data.loading"></loading>
-    <feed-entry
-      *ngIf="!data.loading"
-      *ngFor="let entry of data.feed"
-      [entry]="entry"
-      [currentUser]="data.currentUser"
-      (onVote)="onVote($event)">
-    </feed-entry>
+    <div *ngIf="!data.loading">
+      <feed-entry
+        *ngFor="let entry of data.feed"
+        [entry]="entry"
+        [currentUser]="data.currentUser"
+        (onVote)="onVote($event)">
+      </feed-entry>
+    </div>
   `
 })
 @Apollo({
@@ -225,7 +226,7 @@ export interface Feed {
         variables: {
           type: context.type ? context.type.toUpperCase() : 'TOP'
         },
-        forceFetch: true,
+        pollInterval: 5000,
       }
     }
   },
@@ -258,7 +259,7 @@ export class Feed {
     this.type = params.get('type');
   }
 
-  public onVote(event: onVoteEvent): void {
+  onVote(event: onVoteEvent): void {
     this.vote(event.repoFullName, event.type).then((result: any) => {
       console.log('done', result);
     }).catch((error) => {

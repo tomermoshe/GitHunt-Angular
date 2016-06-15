@@ -3,7 +3,8 @@ import {
 } from '@angular/core';
 
 import {
-  RouterLink
+  RouterLink,
+  Router
 } from '@angular/router-deprecated';
 
 @Component({
@@ -15,19 +16,29 @@ import {
   <nav class="navbar navbar-default">
     <div class="container">
       <div class="navbar-header">
-        <a [routerLink]="['Index']" class="navbar-brand">GitHunt</a>
+        <a [routerLink]="['Feed', { type: 'top' }]" class="navbar-brand">GitHunt</a>
       </div>
 
       <ul class="nav navbar-nav">
-        <li>
-          <a title="Top" [routerLink]="['Feed', {
-            type: 'top'
-          }]">Top</a>
+        <li
+          [class.active]="router.isRouteActive(
+            router.generate(['/Feed', { type: 'top' }])
+          )">
+          <a
+            title="Top"
+            [routerLink]="['Feed', { type: 'top' }]">
+            Top
+          </a>
         </li>
-        <li>
-          <a title="New" [routerLink]="['Feed', {
-            type: 'new'
-          }]">New</a>
+        <li
+          [class.active]="router.isRouteActive(
+            router.generate(['/Feed', { type: 'new' }])
+          )">
+          <a
+            title="New"
+            [routerLink]="['Feed', { type: 'new' }]">
+            New
+          </a>
         </li>
       </ul>
 
@@ -38,4 +49,6 @@ import {
   </nav>
   `
 })
-export class Navigation {}
+export class Navigation {
+  constructor(public router: Router) {}
+}
