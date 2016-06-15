@@ -46,8 +46,8 @@ import './style.css';
 })
 @RouteConfig([
   { path: '/',            redirectTo: ['Feed', { type: 'top' }]},
-  { path: '/feed/:type',  as: 'Feed',     component: Feed },
-  { path: '/submit',      as: 'Submit',   component: NewEntry }
+  { path: '/feed/:type',  name: 'Feed',     component: Feed },
+  { path: '/submit',      name: 'Submit',   component: NewEntry }
 ])
 class GitHunt {}
 

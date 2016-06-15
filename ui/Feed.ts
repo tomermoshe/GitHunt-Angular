@@ -83,7 +83,6 @@ class VoteButtons {
   }
 
   private submitVote(type: string): void {
-    console.log('canVote:', !!this.canVote);
     if (this.canVote === true) {
       this.onVote.emit(type);
     }
@@ -259,10 +258,6 @@ export class Feed {
   }
 
   onVote(event: onVoteEvent): void {
-    this.vote(event.repoFullName, event.type).then((result: any) => {
-      console.log('done', result);
-    }).catch((error) => {
-      console.log('error', error);
-    });
+    this.vote(event.repoFullName, event.type);
   }
 }
