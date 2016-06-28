@@ -1,5 +1,3 @@
-/// <reference path="../typings/index.d.ts" />
-
 import {
   Pipe
 } from '@angular/core';
@@ -13,6 +11,8 @@ import {
 })
 export class EmojifyPipe {
   transform(text) {
-    return emojify(text);
+    if (text) {
+      return emojify(text);
+    }
   }
 }

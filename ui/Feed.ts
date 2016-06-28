@@ -17,11 +17,16 @@ import {
   TimeAgoPipe
 } from 'angular2-moment';
 
+import gql from 'graphql-tag';
+
+import {
+  GraphQLResult,
+} from 'graphql';
+
 import {
   client
 } from './client.ts';
 
-import gql from 'apollo-client/gql';
 
 import {
   EmojifyPipe
@@ -71,7 +76,7 @@ class InfoLabel {
 class VoteButtons {
   @Input() canVote: boolean;
   @Input() score: number;
-  @Input() vote: Object;
+  @Input() vote: any;
   @Output() onVote: EventEmitter<string> = new EventEmitter();
 
   public voteUp(): void {
@@ -84,7 +89,12 @@ class VoteButtons {
 
   private submitVote(type: string): void {
     if (this.canVote === true) {
-      this.onVote.emit(type);
+      const voteValue = {
+        UP: 1,
+        DOWN: -1,
+      }[type];
+
+      this.onVote.emit(this.vote.vote_value === voteValue ? 'CANCEL' : type);
     }
   }
 }
@@ -162,11 +172,6 @@ class FeedEntry {
   }
 }
 
-export interface Feed {
-  data: any;
-  vote(repoFullName: string, type: string): Promise<any>;
-}
-
 @Component({
   selector: 'feed',
   directives: [
@@ -187,7 +192,7 @@ export interface Feed {
 })
 @Apollo({
   client,
-  queries(context: any) {
+  queries(context: Feed) {
     return {
       data: {
         query: gql`
@@ -224,11 +229,11 @@ export interface Feed {
         `,
         variables: {
           type: context.type ? context.type.toUpperCase() : 'TOP'
-        }
+        },
       }
     }
   },
-  mutations(context) {
+  mutations(context: Feed) {
     return {
       vote: (repoFullName, type) => ({
         mutation: gql`
@@ -251,13 +256,18 @@ export interface Feed {
   }
 })
 export class Feed {
+  data: any;
   type: string;
+  vote: (repoFullName: string, type: string) => Promise<GraphQLResult>;
 
   constructor(params: RouteParams) {
     this.type = params.get('type');
   }
 
   onVote(event: onVoteEvent): void {
-    this.vote(event.repoFullName, event.type);
+    this.vote(event.repoFullName, event.type).then(() => {
+      // get new data
+      this.data.refetch();
+    });
   }
 }

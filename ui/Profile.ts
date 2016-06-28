@@ -10,15 +10,11 @@ import {
   Apollo
 } from 'angular2-apollo';
 
-import gql from 'apollo-client/gql';
+import gql from 'graphql-tag';
 
 import {
   client
 } from './client.ts';
-
-export interface Profile {
-  data: any;
-}
 
 @Component({
   selector: 'profile',
@@ -50,7 +46,7 @@ export interface Profile {
 })
 @Apollo({
   client,
-  queries(context: any) {
+  queries(context: Profile) {
     return {
       data: {
         query: gql`
@@ -65,4 +61,6 @@ export interface Profile {
     };
   }
 })
-export class Profile {}
+export class Profile {
+  data: any;
+}
