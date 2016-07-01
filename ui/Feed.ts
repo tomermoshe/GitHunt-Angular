@@ -230,6 +230,7 @@ class FeedEntry {
         variables: {
           type: context.type ? context.type.toUpperCase() : 'TOP'
         },
+        forceFetch: true,
       }
     }
   },
@@ -265,9 +266,6 @@ export class Feed {
   }
 
   onVote(event: onVoteEvent): void {
-    this.vote(event.repoFullName, event.type).then(() => {
-      // get new data
-      this.data.refetch();
-    });
+    this.vote(event.repoFullName, event.type);
   }
 }
