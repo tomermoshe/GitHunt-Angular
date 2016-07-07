@@ -2,7 +2,7 @@
 
 A full-stack Apollo Client and Server example app.
 
-[![Get on Slack](http://slack.apollostack.com/badge.svg)](http://slack.apollostack.com/)
+[![Get on Slack](https://img.shields.io/badge/slack-join-orange.svg)](http://www.apollostack.com/#slack)
 
 Demonstrates:
 
@@ -21,7 +21,7 @@ Make sure you have Node.js installed (the app has been tested with Node `4.4.5` 
 ### 2. Clone and install dependencies
 
 ```
-git clone https://github.com/kamilkisiela/GitHunt-angular2.git
+git clone https://github.com/apollostack/GitHunt-angular2.git
 cd GitHunt-angular2
 npm install
 ```
