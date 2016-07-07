@@ -2,7 +2,6 @@
   "name": "angular2-githunt",
   "version": "1.0.0",
   "description": "Example Angular2 app for Apollo",
-  "main": "index.js",
   "scripts": {
     "start-server": "nodemon api/index.js --watch api --exec babel-node",
     "start-client": "webpack-dev-server -d --hot --inline --no-info --port 3000",
@@ -14,14 +13,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/kamilkisiela/GitHunt-angular2.git"
+    "url": "git+https://github.com/apollostack/GitHunt-angular2.git"
   },
-  "author": "",
+  "author": "Kamil Kisiela <kamil.kisiela@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/kamilkisiela/GitHunt-angular2/issues"
+    "url": "https://github.com/apollostack/GitHunt-angular2/issues"
   },
-  "homepage": "https://github.com/kamilkisiela/GitHunt-angular2#readme",
+  "homepage": "https://github.com/apollostack/GitHunt-angular2#readme",
   "devDependencies": {
     "babel-cli": "^6.8.0",
     "babel-core": "^6.8.0",
