@@ -29,6 +29,10 @@ import {
   Loading
 } from './Loading.ts';
 
+import {
+  RepoInfo
+} from './RepoInfo.ts';
+
 @Component({
   selector: 'comment',
   pipes: [
@@ -53,13 +57,24 @@ class Comment {
   selector: 'comments-page',
   directives: [
     Loading,
-    Comment
+    Comment,
+    RepoInfo
   ],
   template: `
   <loading *ngIf="data.loading"></loading>
   <div *ngIf="!data.loading">
     <div>
       <h1>Comments for <a [href]="data.entry.repository.html_url">{{data.entry.repository.full_name}}</a></h1>
+      <repo-info
+        [fullName]="data.entry.repository.full_name"
+        [description]="data.entry.repository.description"
+        [stargazersCount]="data.entry.repository.stargazers_count"
+        [openIssuesCount]="data.entry.repository.open_issues_count"
+        [createdAt]="data.entry.createdAt"
+        [userUrl]="data.entry.postedBy.html_url"
+        [username]="data.entry.postedBy.login"
+        [commentCount]="data.entry.commentCount">
+      </repo-info>
       <form *ngIf="data.currentUser" (ngSubmit)="submitForm()">
           <div class="form-group">
 
@@ -115,6 +130,11 @@ class Comment {
               html_url
             }
             entry(repoFullName: $repoName) {
+              postedBy {
+                login
+                html_url
+              }
+              createdAt
               comments {
                 postedBy {
                   login
@@ -126,6 +146,9 @@ class Comment {
               repository {
                 full_name
                 html_url
+                description
+                open_issues_count
+                stargazers_count
               }
             }
           }

@@ -14,10 +14,6 @@ import {
   Apollo
 } from 'angular2-apollo';
 
-import {
-  TimeAgoPipe
-} from 'angular2-moment';
-
 import gql from 'graphql-tag';
 
 import {
@@ -33,19 +29,8 @@ import {
 } from './Loading.ts';
 
 import {
-  EmojifyPipe
-} from './pipes.ts';
-
-@Component({
-  selector: 'info-label',
-  template: `
-    <span class="label label-info">{{ label }}: {{ value }}</span>
-  `
-})
-class InfoLabel {
-  @Input() label;
-  @Input() value;
-}
+  RepoInfo
+} from './RepoInfo.ts';
 
 
 @Component({
@@ -103,13 +88,9 @@ interface onVoteEvent {
 @Component({
   selector: 'feed-entry',
   directives: [
-    InfoLabel,
     VoteButtons,
+    RepoInfo,
     RouterLink
-  ],
-  pipes: [
-    EmojifyPipe,
-    TimeAgoPipe
   ],
   template: `
     <div class="media">
@@ -136,26 +117,16 @@ interface onVoteEvent {
             {{ entry.repository.full_name }}
           </a>
         </h4>
-        <p> {{ entry.repository.description | emojify }}</p>
-        <p>
-          <info-label
-            label="Stars"
-            [value]="entry.repository.stargazers_count">
-          </info-label>
-          &nbsp;
-          <info-label
-            label="Issues"
-            [value]="entry.repository.open_issues_count">
-          </info-label>
-          &nbsp;
-          <a [routerLink]="['Comments', { org: org, repoName: repoName }]">
-            View comments ({{entry.commentCount}})
-          </a>
-          &nbsp;&nbsp;&nbsp;
-          Submitted {{ entry.createdAt | amTimeAgo }}
-          &nbsp;by&nbsp;
-          <a [href]="entry.postedBy.html_url">{{ entry.postedBy.login }}</a>
-        </p>
+        <repo-info
+          [fullName]="entry.repository.full_name"
+          [description]="entry.repository.description"
+          [stargazersCount]="entry.repository.stargazers_count"
+          [openIssuesCount]="entry.repository.open_issues_count"
+          [createdAt]="entry.createdAt"
+          [userUrl]="entry.postedBy.html_url"
+          [username]="entry.postedBy.login"
+          [commentCount]="entry.commentCount">
+        </repo-info>
       </div>
     </div>
   `
