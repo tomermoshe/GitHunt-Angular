@@ -6,9 +6,11 @@ function addSelectToEntryQuery(query) {
     .groupBy('entries.id');
 }
 
-function convertNullColsToZero(row) {
-  row.score = row.score || 0;
-  return row;
+function convertNullColsToZero({ score, ...rest }) {
+  return {
+    score: score || 0,
+    ...rest,
+  };
 }
 
 function mapNullColsToZero(query) {
@@ -141,7 +143,33 @@ export class Entries {
 }
 
 export class Comments {
-  getAllByEntryId(entryId) {
-    // No need to batch
+  getCommentsByRepoName(name) {
+    const query = knex('comments')
+      .where({ repository_name: name })
+      .orderBy('created_at', 'desc');
+    return query.then((rows) => (
+      rows || []
+    ));
+  }
+  getCommentCount(name) {
+    const query = knex('comments')
+      .where({ repository_name: name })
+      .count();
+    return query.then((rows) => (
+      rows.map((row) => (
+        row['count(*)'] || '0'
+      ))
+    ));
+  }
+  submitComment(repoFullName, username, content) {
+    return knex.transaction((trx) => (
+      trx('comments')
+        .insert({
+          content,
+          created_at: Date.now(),
+          repository_name: repoFullName,
+          posted_by: username,
+        })
+    ));
   }
 }

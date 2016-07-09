@@ -6,7 +6,8 @@ import {
 } from '@angular/core';
 
 import {
-  RouteParams
+  RouteParams,
+  RouterLink
 } from '@angular/router-deprecated';
 
 import {
@@ -27,18 +28,13 @@ import {
   client
 } from './client.ts';
 
+import {
+  Loading
+} from './Loading.ts';
 
 import {
   EmojifyPipe
 } from './pipes.ts';
-
-@Component({
-  selector: 'loading',
-  template: `
-    <div>Loading...</div>
-  `
-})
-class Loading {}
 
 @Component({
   selector: 'info-label',
@@ -108,7 +104,8 @@ interface onVoteEvent {
   selector: 'feed-entry',
   directives: [
     InfoLabel,
-    VoteButtons
+    VoteButtons,
+    RouterLink
   ],
   pipes: [
     EmojifyPipe,
@@ -150,6 +147,10 @@ interface onVoteEvent {
             label="Issues"
             [value]="entry.repository.open_issues_count">
           </info-label>
+          &nbsp;
+          <a [routerLink]="['Comments', { org: org, repoName: repoName }]">
+            View comments ({{entry.commentCount}})
+          </a>
           &nbsp;&nbsp;&nbsp;
           Submitted {{ entry.createdAt | amTimeAgo }}
           &nbsp;by&nbsp;
@@ -163,6 +164,14 @@ class FeedEntry {
   @Input() entry;
   @Input() currentUser;
   @Output() onVote: EventEmitter<onVoteEvent> = new EventEmitter();
+  org: string;
+  repoName: string;
+
+  ngOnInit() {
+    const parts = this.entry.repository.full_name.split('/');
+    this.org = parts[0];
+    this.repoName = parts[1];
+  }
 
   onButtonVote(type: string): void {
     this.onVote.emit({

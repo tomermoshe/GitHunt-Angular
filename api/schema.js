@@ -39,7 +39,7 @@ type Mutation {
 
   # Comment on a repository
   # TBD: Should this return an Entry or just the new Comment?
-  comment(repoFullName: String!, content: String!): Entry
+  submitComment(repoFullName: String!, commentContent: String!): Entry
 }
 
 schema {
@@ -104,8 +104,21 @@ const rootResolvers = {
       ));
     },
 
-    comment() {
-      throw new Error('Not implemented.');
+    submitComment(_, { repoFullName, commentContent }, context) {
+      if (!context.user) {
+        throw new Error('Must be logged in to submit a comment.');
+      }
+      return Promise.resolve()
+       .then(() => (
+         context.Comments.submitComment(
+           repoFullName,
+           context.user.login,
+           commentContent
+         )
+       ))
+       .then(() => (
+         context.Entries.getByRepoFullName(repoFullName)
+       ));
     },
   },
 };

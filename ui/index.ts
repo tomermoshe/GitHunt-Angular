@@ -28,6 +28,10 @@ import {
   NewEntry
 } from './NewEntry.ts';
 
+import {
+  CommentsPage
+} from './CommentsPage.ts';
+
 import './style.css';
 
 @Component({
@@ -46,9 +50,10 @@ import './style.css';
   `
 })
 @RouteConfig([
-  { path: '/',            redirectTo: ['Feed', { type: 'top' }]},
-  { path: '/feed/:type',  name: 'Feed',     component: Feed },
-  { path: '/submit',      name: 'Submit',   component: NewEntry }
+  { path: '/',                redirectTo: ['Feed', { type: 'top' }]},
+  { path: '/feed/:type',      name: 'Feed',     component: Feed },
+  { path: '/submit',          name: 'Submit',   component: NewEntry },
+  { path: '/:org/:repoName',  name: 'Comments', component: CommentsPage }
 ])
 class GitHunt {}
 
