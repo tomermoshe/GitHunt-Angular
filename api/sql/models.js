@@ -24,7 +24,7 @@ function mapNullColsToZero(query) {
 }
 
 export class Entries {
-  getForFeed(type, after) {
+  getForFeed(type) {
     const query = knex('entries')
       .modify(addSelectToEntryQuery);
 
@@ -55,35 +55,35 @@ export class Entries {
     return Promise.resolve()
 
     // First, get the entry_id from repoFullName
-    .then(() => {
-      return knex('entries')
+    .then(() =>
+      knex('entries')
         .where({ repository_name: repoFullName })
         .select(['id'])
         .first()
         .then(({ id }) => {
           entry_id = id;
-        });
-    })
+        })
+    )
 
     // Remove any previous votes by this person
-    .then(() => {
-      return knex('votes')
+    .then(() =>
+      knex('votes')
         .where({
           entry_id,
           username,
         })
-        .delete();
-    })
+        .delete()
+    )
 
     // Then, insert a vote
-    .then(() => {
-      return knex('votes')
+    .then(() =>
+      knex('votes')
         .insert({
           entry_id,
           username,
           vote_value: voteValue,
-        });
-    });
+        })
+    );
   }
 
   haveVotedForEntry(repoFullName, username) {
@@ -92,22 +92,22 @@ export class Entries {
     return Promise.resolve()
 
     // First, get the entry_id from repoFullName
-    .then(() => {
-      return knex('entries')
+    .then(() =>
+      knex('entries')
         .where({ repository_name: repoFullName })
         .select(['id'])
         .first()
         .then(({ id }) => {
           entry_id = id;
-        });
-    })
+        })
+    )
 
-    .then(() => {
-      return knex('votes')
+    .then(() =>
+      knex('votes')
         .where({ entry_id, username })
         .select(['id', 'vote_value'])
-        .first();
-    })
+        .first()
+    )
 
     .then((vote) => vote || { vote_value: 0 });
   }
@@ -117,8 +117,8 @@ export class Entries {
     const rateLimitThresh = 3;
 
     // Rate limiting logic
-    return knex.transaction((trx) => {
-      return trx('entries')
+    return knex.transaction((trx) =>
+      trx('entries')
         .count()
         .where('posted_by', '=', username)
         .where('created_at', '>', Date.now() - rateLimitMs)
@@ -134,11 +134,11 @@ export class Entries {
                 created_at: Date.now(),
                 updated_at: Date.now(),
                 repository_name: repoFullName,
-                posted_by: username
+                posted_by: username,
               });
           }
-        });
-    });
+        })
+    );
   }
 }
 

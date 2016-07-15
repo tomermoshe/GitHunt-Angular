@@ -67,21 +67,17 @@ const rootResolvers = {
       }
 
       return Promise.resolve()
-        .then(() => {
-          return context.Repositories.getByFullName(repoFullName)
-            .catch(() => {
-              throw new Error(`Couldn't find repository named "${repoFullName}"`);
-            });
-        })
-        .then(() => {
-          return context.Entries.submitRepository(
+        .then(() => context.Repositories.getByFullName(repoFullName)
+          .catch(() => {
+            throw new Error(`Couldn't find repository named "${repoFullName}"`);
+          })
+        )
+        .then(() => context.Entries.submitRepository(
             repoFullName,
             context.user.login
           )
-        })
-        .then(() => {
-          return context.Entries.getByRepoFullName(repoFullName)
-        });
+        )
+        .then(() => context.Entries.getByRepoFullName(repoFullName));
     },
 
     vote(_, { repoFullName, type }, context) {
