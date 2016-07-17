@@ -5,6 +5,10 @@ node_js:
   - "5"
   - "4"
 
+notifications:
+  # disable email notification
+  email: false
+
 cache:
   directories:
     # cache node modules
