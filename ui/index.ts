@@ -7,6 +7,11 @@ import {
 } from '@angular/core';
 
 import {
+  disableDeprecatedForms,
+  provideForms
+} from '@angular/forms';
+
+import {
   bootstrap
 } from '@angular/platform-browser-dynamic';
 
@@ -58,5 +63,9 @@ import './style.css';
 class GitHunt {}
 
 bootstrap(GitHunt, [
-  ROUTER_PROVIDERS
-]);
+  ROUTER_PROVIDERS,
+  disableDeprecatedForms(),
+  provideForms()
+]).catch((error) => {
+  console.log('error', error);
+});

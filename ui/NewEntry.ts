@@ -6,10 +6,6 @@ import {
 } from '@angular/core';
 
 import {
-  NgForm
-} from '@angular/common';
-
-import {
   Router
 } from '@angular/router-deprecated';
 
@@ -33,19 +29,20 @@ import {
     <div>
       <h1>Submit a repository</h1>
 
-      <form (ngSubmit)="_submitForm(name.value)" #submitForm="ngForm">
+      <form (ngSubmit)="_submitForm()">
         <div class="form-group">
-          <label for="exampleInputEmail1">
+          <label for="repositoryInput">
             Repository name
           </label>
 
           <input
             type="text"
             class="form-control"
-            id="exampleInputEmail1"
+            id="repositoryInput"
             placeholder="apollostack/GitHunt"
-            ngControl="repoFullName"
-            #name="ngForm"
+            [(ngModel)]="repoFullName"
+            name="repoFullName"
+            required
           />
         </div>
 
@@ -81,13 +78,18 @@ import {
 })
 export class NewEntry {
   error: string;
+  repoFullName: string;
   submitRepository: (repoFullName: string) => Promise<GraphQLResult>
 
   constructor(private router: Router) { }
 
-  _submitForm(repoFullName: string): void {
+  _submitForm(): void {
+    if (!this.repoFullName) {
+      return;
+    }
+
     this.error = null;
-    this.submitRepository(repoFullName).then(({data, errors}) => {
+    this.submitRepository(this.repoFullName).then(({data, errors}) => {
       if (errors) {
         this.error = errors[0].message;
       } else {
