@@ -39,7 +39,7 @@ type Mutation {
 
   # Comment on a repository
   # TBD: Should this return an Entry or just the new Comment?
-  submitComment(repoFullName: String!, commentContent: String!): Entry
+  submitComment(repoFullName: String!, commentContent: String!): Comment
 }
 
 schema {
@@ -112,8 +112,8 @@ const rootResolvers = {
            commentContent
          )
        ))
-       .then(() => (
-         context.Entries.getByRepoFullName(repoFullName)
+       .then(([id]) => (
+         context.Comments.getCommentById(id)
        ));
     },
   },

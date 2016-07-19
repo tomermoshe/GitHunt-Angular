@@ -17,8 +17,8 @@ import {
 import gql from 'graphql-tag';
 
 import {
-  GraphQLResult,
-} from 'graphql';
+  ApolloQueryResult,
+} from 'apollo-client';
 
 import {
   client
@@ -239,7 +239,7 @@ class FeedEntry {
 export class Feed {
   data: any;
   type: string;
-  vote: (repoFullName: string, type: string) => Promise<GraphQLResult>;
+  vote: (repoFullName: string, type: string) => Promise<ApolloQueryResult>;
 
   constructor(params: RouteParams) {
     this.type = params.get('type');

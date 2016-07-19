@@ -18,8 +18,8 @@ import {
 } from 'angular2-moment';
 
 import {
-  GraphQLResult
-} from 'graphql';
+  ApolloQueryResult
+} from 'apollo-client';
 
 import {
   client
@@ -130,6 +130,7 @@ class Comment {
               html_url
             }
             entry(repoFullName: $repoName) {
+              id
               postedBy {
                 login
                 html_url
@@ -156,17 +157,21 @@ class Comment {
         variables: {
           repoName: `${context.org}/${context.repoName}`,
         },
-        forceFetch: true,
       },
     };
   },
   mutations(context: CommentsPage) {
     return {
-      submitComment: (repoFullName: string, commentContent: string) => ({
+      submitComment: (repoFullName, repoId, commentContent, currentUser) => ({
         mutation: gql`
           mutation submitComment($repoFullName: String!, $commentContent: String!) {
             submitComment(repoFullName: $repoFullName, commentContent: $commentContent) {
+              postedBy {
+                login
+                html_url
+              }
               createdAt
+              content
             }
           }
         `,
@@ -174,7 +179,24 @@ class Comment {
           repoFullName,
           commentContent,
         },
-      }),
+        optimisticResponse: {
+         __typename: 'Mutation',
+         submitComment: {
+           __typename: 'Comment',
+           postedBy: currentUser,
+           createdAt: +new Date,
+           content: commentContent,
+         },
+       },
+       resultBehaviors: [
+         {
+           type: 'ARRAY_INSERT',
+           resultPath: [ 'submitComment' ],
+           storePath: [ 'Entry' + repoId, 'comments' ],
+           where: 'PREPEND',
+         },
+       ],
+     }),
     };
   },
 })
@@ -184,7 +206,12 @@ export class CommentsPage {
   data: any;
   newComment: string;
   noCommentContent: boolean;
-  submitComment: (repoFullName: string, commentContent: string) => Promise<GraphQLResult>;
+  submitComment: (
+      repoFullName: string,
+      repoId: string,
+      commentContent: string,
+      currentUser: string
+    ) => Promise<ApolloQueryResult>;
 
   constructor(params: RouteParams) {
     this.org = params.get('org');
@@ -194,15 +221,16 @@ export class CommentsPage {
 
   submitForm() {
     this.noCommentContent = false;
+
     const repositoryName = this.data.entry.repository.full_name;
+    const repoId = this.data.entry.id;
+    const currentUser = this.data.currentUser;
+
     if (!this.newComment) {
       this.noCommentContent = true;
     } else {
-      this.submitComment(repositoryName, this.newComment).then((res) => {
-        if (!res.errors) {
-          this.newComment = '';
-          this.data.refetch();
-        }
+      this.submitComment(repositoryName, repoId, this.newComment, currentUser).then(() => {
+        this.newComment = '';
       });
     }
   }

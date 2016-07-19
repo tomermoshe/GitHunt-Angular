@@ -143,6 +143,11 @@ export class Entries {
 }
 
 export class Comments {
+  getCommentById(id) {
+    const query = knex('comments')
+      .where({ id });
+    return query.then(([row]) => row);
+  }
   getCommentsByRepoName(name) {
     const query = knex('comments')
       .where({ repository_name: name })

@@ -13,11 +13,11 @@ import {
   Apollo
 } from 'angular2-apollo';
 
-import gql from 'graphql-tag';
-
 import {
-  GraphQLResult,
-} from 'graphql';
+  ApolloQueryResult
+} from 'apollo-client';
+
+import gql from 'graphql-tag';
 
 import {
   client
@@ -79,7 +79,7 @@ import {
 export class NewEntry {
   error: string;
   repoFullName: string;
-  submitRepository: (repoFullName: string) => Promise<GraphQLResult>
+  submitRepository: (repoFullName: string) => Promise<ApolloQueryResult>
 
   constructor(private router: Router) { }
 
@@ -89,12 +89,10 @@ export class NewEntry {
     }
 
     this.error = null;
-    this.submitRepository(this.repoFullName).then(({data, errors}) => {
-      if (errors) {
-        this.error = errors[0].message;
-      } else {
-        this.router.navigate(['Feed', { type: 'new' }]);
-      }
+    this.submitRepository(this.repoFullName).then(({ data }) => {
+      this.router.navigate(['Feed', { type: 'new' }]);
+    }).catch((errors) => {
+      this.error = errors[0].message;
     });
   }
 }
