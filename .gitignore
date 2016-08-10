@@ -1,4 +1,5 @@
 node_modules
+api/dist
 .DS_Store
 dev.sqlite3
 .env
