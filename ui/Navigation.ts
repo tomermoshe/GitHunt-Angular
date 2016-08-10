@@ -1,47 +1,33 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 
-import {
-  RouterLink,
-  Router
-} from '@angular/router-deprecated';
-
-import {
-  Profile
-} from './Profile.ts';
+import { Profile } from './Profile.ts';
 
 @Component({
   selector: 'navigation',
   directives: [
-    RouterLink,
+    ROUTER_DIRECTIVES,
     Profile
   ],
   template: `
   <nav class="navbar navbar-default">
     <div class="container">
-      <div class="navbar-header">
-        <a [routerLink]="['Feed', { type: 'top' }]" class="navbar-brand">GitHunt</a>
+      <div class="navbar-header" routerLinkActive="active">
+        <a routerLink="/feed/top" class="navbar-brand">GitHunt</a>
       </div>
 
       <ul class="nav navbar-nav">
-        <li
-          [class.active]="router.isRouteActive(
-            router.generate(['/Feed', { type: 'top' }])
-          )">
+        <li routerLinkActive="active">
           <a
             title="Top"
-            [routerLink]="['Feed', { type: 'top' }]">
+            routerLink="/feed/top">
             Top
           </a>
         </li>
-        <li
-          [class.active]="router.isRouteActive(
-            router.generate(['/Feed', { type: 'new' }])
-          )">
+        <li routerLinkActive="active">
           <a
             title="New"
-            [routerLink]="['Feed', { type: 'new' }]">
+            routerLink="/feed/new">
             New
           </a>
         </li>

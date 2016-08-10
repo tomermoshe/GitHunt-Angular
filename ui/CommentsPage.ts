@@ -1,37 +1,14 @@
-import {
-  Component,
-  Input
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Apollo } from 'angular2-apollo';
+import { TimeAgoPipe } from 'angular2-moment';
+import { ApolloQueryResult } from 'apollo-client';
 
-import {
-  RouteParams
-} from '@angular/router-deprecated';
-
-import {
-  Apollo
-} from 'angular2-apollo';
+import { client } from './client.ts';
+import { Loading } from './Loading.ts';
+import { RepoInfo } from './RepoInfo.ts';
 
 import gql from 'graphql-tag';
-
-import {
-  TimeAgoPipe
-} from 'angular2-moment';
-
-import {
-  ApolloQueryResult
-} from 'apollo-client';
-
-import {
-  client
-} from './client.ts';
-
-import {
-  Loading
-} from './Loading.ts';
-
-import {
-  RepoInfo
-} from './RepoInfo.ts';
 
 @Component({
   selector: 'comment',
@@ -42,7 +19,7 @@ import {
     <div class="comment-box">
       <b>{{content}}</b>
       <br />
-      Submitted {{ createdAt | amTimeAgo }} by <a [href]="userUrl">{{username}}</a>
+      Submitted {{createdAt | amTimeAgo}} by <a [href]="userUrl">{{username}}</a>
     </div>
   `
 })
@@ -200,7 +177,7 @@ class Comment {
     };
   },
 })
-export class CommentsPage {
+export class CommentsPage implements OnInit {
   org: string;
   repoName: string;
   data: any;
@@ -213,10 +190,16 @@ export class CommentsPage {
       currentUser: string
     ) => Promise<ApolloQueryResult>;
 
-  constructor(params: RouteParams) {
-    this.org = params.get('org');
-    this.repoName = params.get('repoName');
+  constructor(private route: ActivatedRoute) {
     this.noCommentContent = false;
+  }
+
+  ngOnInit() {
+    this.route.params
+      .subscribe(params => {
+        this.org = params['org'];
+        this.repoName = params['repoName'];
+      });
   }
 
   submitForm() {

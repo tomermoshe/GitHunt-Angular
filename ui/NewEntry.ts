@@ -1,27 +1,11 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Router } from '@angular/router';
+import { Apollo } from 'angular2-apollo';
+import { ApolloQueryResult } from 'apollo-client';
 
-import {
-  Router
-} from '@angular/router-deprecated';
-
-import {
-  Apollo
-} from 'angular2-apollo';
-
-import {
-  ApolloQueryResult
-} from 'apollo-client';
+import { client } from './client.ts';
 
 import gql from 'graphql-tag';
-
-import {
-  client
-} from './client.ts';
 
 @Component({
   selector: 'new-entry',
@@ -90,9 +74,9 @@ export class NewEntry {
 
     this.error = null;
     this.submitRepository(this.repoFullName).then(({ data }) => {
-      this.router.navigate(['Feed', { type: 'new' }]);
-    }).catch((errors) => {
-      this.error = errors[0].message;
+      this.router.navigate(['/feed/new']);
+    }).catch((error) => {
+      this.error = error.message;
     });
   }
 }

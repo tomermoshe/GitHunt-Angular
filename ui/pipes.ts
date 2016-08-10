@@ -1,10 +1,5 @@
-import {
-  Pipe
-} from '@angular/core';
-
-import {
-  emojify
-} from 'node-emoji';
+import { Pipe } from '@angular/core';
+import { emojify } from 'node-emoji';
 
 @Pipe({
   name: 'emojify'

@@ -2,40 +2,13 @@ import 'es6-shim';
 import 'reflect-metadata';
 import 'zone.js/dist/zone';
 
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
+import { disableDeprecatedForms, provideForms } from '@angular/forms';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+import { bootstrap } from '@angular/platform-browser-dynamic';
 
-import {
-  disableDeprecatedForms,
-  provideForms
-} from '@angular/forms';
-
-import {
-  bootstrap
-} from '@angular/platform-browser-dynamic';
-
-import {
-  RouteConfig,
-  RouterOutlet,
-  ROUTER_PROVIDERS
-} from '@angular/router-deprecated';
-
-import {
-  Feed
-} from './Feed.ts';
-
-import {
-  Navigation
-} from './Navigation.ts';
-
-import {
-  NewEntry
-} from './NewEntry.ts';
-
-import {
-  CommentsPage
-} from './CommentsPage.ts';
+import { APP_ROUTER_PROVIDERS } from './routes.ts';
+import { Navigation } from './Navigation.ts';
 
 import './style.css';
 
@@ -43,7 +16,7 @@ import './style.css';
   selector: 'git-hunt',
   directives: [
     Navigation,
-    RouterOutlet
+    ROUTER_DIRECTIVES
   ],
   template: `
     <div>
@@ -54,16 +27,10 @@ import './style.css';
     </div>
   `
 })
-@RouteConfig([
-  { path: '/',                redirectTo: ['Feed', { type: 'top' }]},
-  { path: '/feed/:type',      name: 'Feed',     component: Feed },
-  { path: '/submit',          name: 'Submit',   component: NewEntry },
-  { path: '/:org/:repoName',  name: 'Comments', component: CommentsPage }
-])
 class GitHunt {}
 
 bootstrap(GitHunt, [
-  ROUTER_PROVIDERS,
+  APP_ROUTER_PROVIDERS,
   disableDeprecatedForms(),
   provideForms()
 ]).catch((error) => {

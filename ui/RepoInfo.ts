@@ -1,24 +1,13 @@
-import {
-  Component,
-  Input
-} from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+import { TimeAgoPipe } from 'angular2-moment';
 
-import {
-  RouterLink
-} from '@angular/router-deprecated';
-
-import {
-  TimeAgoPipe
-} from 'angular2-moment';
-
-import {
-  EmojifyPipe
-} from './pipes.ts';
+import { EmojifyPipe } from './pipes.ts';
 
 @Component({
   selector: 'info-label',
   template: `
-    <span class="label label-info">{{ label }}: {{ value }}</span>
+    <span class="label label-info">{{label}}: {{value}}</span>
   `
 })
 class InfoLabel {
@@ -30,7 +19,7 @@ class InfoLabel {
   selector: 'repo-info',
   directives: [
     InfoLabel,
-    RouterLink
+    ROUTER_DIRECTIVES
   ],
   pipes: [
     EmojifyPipe,
@@ -50,7 +39,7 @@ class InfoLabel {
       </info-label>
       <span *ngIf="commentCount || commentCount === 0">
         &nbsp;
-        <a [routerLink]="['Comments', { org: org, repoName: repoName }]">
+        <a [routerLink]="['/', org, repoName]">
         View comments ({{ commentCount }})
         </a>
       </span>
@@ -61,7 +50,7 @@ class InfoLabel {
     </p>
   `
 })
-export class RepoInfo {
+export class RepoInfo implements OnInit {
   @Input() fullName: string;
   @Input() description: string;
   @Input() stargazersCount: number;

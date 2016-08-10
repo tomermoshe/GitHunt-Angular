@@ -1,37 +1,13 @@
-import {
-  Component,
-  Input,
-  Output,
-  EventEmitter
-} from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { ActivatedRoute, ROUTER_DIRECTIVES } from '@angular/router';
+import { Apollo } from 'angular2-apollo';
+import { ApolloQueryResult } from 'apollo-client';
 
-import {
-  RouteParams,
-  RouterLink
-} from '@angular/router-deprecated';
-
-import {
-  Apollo
-} from 'angular2-apollo';
+import { client } from './client.ts';
+import { Loading } from './Loading.ts';
+import { RepoInfo } from './RepoInfo.ts';
 
 import gql from 'graphql-tag';
-
-import {
-  ApolloQueryResult,
-} from 'apollo-client';
-
-import {
-  client
-} from './client.ts';
-
-import {
-  Loading
-} from './Loading.ts';
-
-import {
-  RepoInfo
-} from './RepoInfo.ts';
-
 
 @Component({
   selector: 'vote-buttons',
@@ -58,7 +34,7 @@ class VoteButtons {
   @Input() canVote: boolean;
   @Input() score: number;
   @Input() vote: any;
-  @Output() onVote: EventEmitter<string> = new EventEmitter();
+  @Output() onVote: EventEmitter<string> = new EventEmitter<string>();
 
   public voteUp(): void {
     this.submitVote('UP');
@@ -90,7 +66,7 @@ interface onVoteEvent {
   directives: [
     VoteButtons,
     RepoInfo,
-    RouterLink
+    ROUTER_DIRECTIVES
   ],
   template: `
     <div class="media">
@@ -131,10 +107,10 @@ interface onVoteEvent {
     </div>
   `
 })
-class FeedEntry {
+class FeedEntry implements OnInit {
   @Input() entry;
   @Input() currentUser;
-  @Output() onVote: EventEmitter<onVoteEvent> = new EventEmitter();
+  @Output() onVote: EventEmitter<onVoteEvent> = new EventEmitter<onVoteEvent>();
   org: string;
   repoName: string;
 
@@ -236,13 +212,17 @@ class FeedEntry {
     };
   }
 })
-export class Feed {
+export class Feed implements OnInit {
   data: any;
   type: string;
   vote: (repoFullName: string, type: string) => Promise<ApolloQueryResult>;
 
-  constructor(params: RouteParams) {
-    this.type = params.get('type');
+  constructor(private route: ActivatedRoute) {}
+
+  ngOnInit() {
+    this.route.params.subscribe((params) => {
+      this.type = params['type'];
+    });
   }
 
   onVote(event: onVoteEvent): void {

@@ -1,25 +1,15 @@
-import {
-  Component
-} from '@angular/core';
+import { Component } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
+import { Apollo } from 'angular2-apollo';
 
-import {
-  RouterLink
-} from '@angular/router-deprecated';
-
-import {
-  Apollo
-} from 'angular2-apollo';
+import { client } from './client.ts';
 
 import gql from 'graphql-tag';
-
-import {
-  client
-} from './client.ts';
 
 @Component({
   selector: 'profile',
   directives: [
-    RouterLink
+    ROUTER_DIRECTIVES
   ],
   template: `
     <p *ngIf="data.loading" class="navbar-text navbar-right">
@@ -27,13 +17,13 @@ import {
     </p>
     <span *ngIf="!data.loading && data.currentUser">
       <p class="navbar-text navbar-right">
-        {{ data.currentUser.login }}
+        {{data.currentUser.login}}
         &nbsp;
         <a href="/logout">Log out</a>
       </p>
       <a
         class="btn navbar-btn navbar-right btn-success"
-        [routerLink]="['Submit']">
+        routerLink="/submit">
         <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
           &nbsp;
           Submit
