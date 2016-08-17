@@ -52,7 +52,6 @@ const rootResolvers = {
   Query: {
     feed(_, { type, offset, limit }, context) {
       const protectedLimit = (limit < 1 || limit > 10) ? 10 : limit;
-
       return context.Entries.getForFeed(type, offset, protectedLimit);
     },
     entry(_, { repoFullName }, context) {

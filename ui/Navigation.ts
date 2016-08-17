@@ -1,14 +1,9 @@
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
-import { Profile } from './Profile.ts';
 
 @Component({
   selector: 'navigation',
-  directives: [
-    ROUTER_DIRECTIVES,
-    Profile
-  ],
   template: `
   <nav class="navbar navbar-default">
     <div class="container">

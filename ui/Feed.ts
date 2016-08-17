@@ -1,5 +1,5 @@
 import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
-import { ActivatedRoute, ROUTER_DIRECTIVES } from '@angular/router';
+import { ActivatedRoute} from '@angular/router';
 import { Apollo } from 'angular2-apollo';
 import { ApolloQueryResult } from 'apollo-client';
 
@@ -65,8 +65,7 @@ interface onVoteEvent {
   selector: 'feed-entry',
   directives: [
     VoteButtons,
-    RepoInfo,
-    ROUTER_DIRECTIVES
+    RepoInfo
   ],
   template: `
     <div class="media">

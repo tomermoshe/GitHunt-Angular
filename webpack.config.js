@@ -1,4 +1,7 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+var Dashboard = require('webpack-dashboard');
+var DashboardPlugin = require('webpack-dashboard/plugin');
+var dashboard = new Dashboard();
 
 module.exports = {
   entry: './ui/index.ts',
@@ -25,6 +28,7 @@ module.exports = {
     new HtmlWebpackPlugin({
       template: 'ui/index.html',
     }),
+    new DashboardPlugin(dashboard.setData),
   ],
   devServer: {
     proxy: {

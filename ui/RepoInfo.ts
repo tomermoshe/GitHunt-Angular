@@ -1,8 +1,4 @@
 import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import { TimeAgoPipe } from 'angular2-moment';
-
-import { EmojifyPipe } from './pipes.ts';
 
 @Component({
   selector: 'info-label',
@@ -18,12 +14,7 @@ class InfoLabel {
 @Component({
   selector: 'repo-info',
   directives: [
-    InfoLabel,
-    ROUTER_DIRECTIVES
-  ],
-  pipes: [
-    EmojifyPipe,
-    TimeAgoPipe
+    InfoLabel
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
   template: `

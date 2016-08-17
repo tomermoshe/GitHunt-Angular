@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Apollo } from 'angular2-apollo';
 
 import { client } from './client.ts';
@@ -8,9 +7,6 @@ import gql from 'graphql-tag';
 
 @Component({
   selector: 'profile',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   template: `
     <p *ngIf="data.loading" class="navbar-text navbar-right">
       Loading...
