@@ -4,4 +4,3 @@ api/dist
 dev.sqlite3
 .env
 .idea/
-.env.default
