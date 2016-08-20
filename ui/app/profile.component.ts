@@ -1,9 +1,17 @@
 import { Component } from '@angular/core';
-import { Apollo } from 'angular2-apollo';
-
-import { client } from './client.ts';
 
 import gql from 'graphql-tag';
+
+import GraphQL from './graphql';
+
+const CurrentUserQuery = gql`
+  query CurrentUserForProfile {
+    currentUser {
+      login
+      avatar_url
+    }
+  }
+`;
 
 @Component({
   selector: 'profile',
@@ -30,9 +38,8 @@ import gql from 'graphql-tag';
     </p>
   `
 })
-@Apollo({
-  client,
-  queries(context: Profile) {
+@GraphQL({
+  queries() {
     return {
       data: {
         query: gql`
@@ -47,6 +54,6 @@ import gql from 'graphql-tag';
     };
   }
 })
-export class Profile {
+export class ProfileComponent {
   data: any;
 }

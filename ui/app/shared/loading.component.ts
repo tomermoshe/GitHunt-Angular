@@ -6,4 +6,4 @@ import { Component } from '@angular/core';
     <div>Loading...</div>
   `
 })
-export class Loading {}
+export class LoadingComponent {}

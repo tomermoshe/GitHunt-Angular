@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 
-
 @Component({
   selector: 'navigation',
   template: `
@@ -33,6 +32,6 @@ import { Router } from '@angular/router';
   </nav>
   `
 })
-export class Navigation {
+export class NavigationComponent {
   constructor(public router: Router) {}
 }
