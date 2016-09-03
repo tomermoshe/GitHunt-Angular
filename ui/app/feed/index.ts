@@ -1,4 +1,4 @@
-import { RouterConfig } from '@angular/router';
+import { Routes } from '@angular/router';
 
 import { FeedComponent } from './feed.component';
 import { FeedEntryComponent } from './feed-entry.component';
@@ -10,7 +10,7 @@ export const FEED_DECLARATIONS = [
   VoteButtonsComponent
 ];
 
-export const FEED_ROUTES: RouterConfig = [
+export const FEED_ROUTES: Routes = [
   { path: '', redirectTo: '/feed/top', pathMatch: 'full' },
   { path: 'feed/:type', component: FeedComponent }
 ];
