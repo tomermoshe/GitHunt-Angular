@@ -1,16 +1,20 @@
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import { Apollo } from 'angular2-apollo';
-
-import { client } from './client.ts';
 
 import gql from 'graphql-tag';
 
+import GraphQL from './graphql';
+
+const CurrentUserQuery = gql`
+  query CurrentUserForProfile {
+    currentUser {
+      login
+      avatar_url
+    }
+  }
+`;
+
 @Component({
   selector: 'profile',
-  directives: [
-    ROUTER_DIRECTIVES
-  ],
   template: `
     <p *ngIf="data.loading" class="navbar-text navbar-right">
       Loading...
@@ -34,9 +38,8 @@ import gql from 'graphql-tag';
     </p>
   `
 })
-@Apollo({
-  client,
-  queries(context: Profile) {
+@GraphQL({
+  queries() {
     return {
       data: {
         query: gql`
@@ -51,6 +54,6 @@ import gql from 'graphql-tag';
     };
   }
 })
-export class Profile {
+export class ProfileComponent {
   data: any;
 }

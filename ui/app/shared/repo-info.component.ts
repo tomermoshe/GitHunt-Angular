@@ -1,31 +1,7 @@
-import { Component, Input, OnInit, ChangeDetectionStrategy } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import { TimeAgoPipe } from 'angular2-moment';
-
-import { EmojifyPipe } from './pipes.ts';
-
-@Component({
-  selector: 'info-label',
-  template: `
-    <span class="label label-info">{{label}}: {{value}}</span>
-  `
-})
-class InfoLabel {
-  @Input() label;
-  @Input() value;
-}
+import { Component, OnInit, Input } from '@angular/core';
 
 @Component({
   selector: 'repo-info',
-  directives: [
-    InfoLabel,
-    ROUTER_DIRECTIVES
-  ],
-  pipes: [
-    EmojifyPipe,
-    TimeAgoPipe
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush,
   template: `
     <p> {{ description | emojify }}</p>
     <p>
@@ -45,13 +21,13 @@ class InfoLabel {
         </a>
       </span>
       &nbsp;&nbsp;&nbsp;
-      Submitted {{ createdAt | amTimeAgo }}
+      Submitted <!--{{ createdAt | amTimeAgo }}-->
       &nbsp;by&nbsp;
       <a [href]="userUrl">{{ username }}</a>
     </p>
   `
 })
-export class RepoInfo implements OnInit {
+export class RepoInfoComponent implements OnInit {
   @Input() fullName: string;
   @Input() description: string;
   @Input() stargazersCount: number;

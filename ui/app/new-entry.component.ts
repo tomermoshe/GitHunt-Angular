@@ -1,11 +1,10 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { Apollo } from 'angular2-apollo';
 import { ApolloQueryResult } from 'apollo-client';
 
-import { client } from './client.ts';
-
 import gql from 'graphql-tag';
+
+import GraphQL from './graphql';
 
 @Component({
   selector: 'new-entry',
@@ -41,9 +40,8 @@ import gql from 'graphql-tag';
     </div>
   `
 })
-@Apollo({
-  client,
-  mutations(context: NewEntry) {
+@GraphQL({
+  mutations(context: NewEntryComponent) {
     return {
       submitRepository: (repoFullName) => ({
         mutation: gql`
@@ -60,7 +58,7 @@ import gql from 'graphql-tag';
     };
   }
 })
-export class NewEntry {
+export class NewEntryComponent {
   error: string;
   repoFullName: string;
   submitRepository: (repoFullName: string) => Promise<ApolloQueryResult>

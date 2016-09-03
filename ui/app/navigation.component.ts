@@ -1,14 +1,8 @@
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router } from '@angular/router';
-
-import { Profile } from './Profile.ts';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'navigation',
-  directives: [
-    ROUTER_DIRECTIVES,
-    Profile
-  ],
   template: `
   <nav class="navbar navbar-default">
     <div class="container">
@@ -38,6 +32,6 @@ import { Profile } from './Profile.ts';
   </nav>
   `
 })
-export class Navigation {
+export class NavigationComponent {
   constructor(public router: Router) {}
 }

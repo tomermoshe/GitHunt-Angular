@@ -1,42 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Apollo } from 'angular2-apollo';
-import { TimeAgoPipe } from 'angular2-moment';
 import { ApolloQueryResult } from 'apollo-client';
-
-import { client } from './client.ts';
-import { Loading } from './Loading.ts';
-import { RepoInfo } from './RepoInfo.ts';
+import { Subscription } from 'rxjs/Subscription';
 
 import gql from 'graphql-tag';
 
-@Component({
-  selector: 'comment',
-  pipes: [
-    TimeAgoPipe
-  ],
-  template: `
-    <div class="comment-box">
-      <b>{{content}}</b>
-      <br />
-      Submitted {{createdAt | amTimeAgo}} by <a [href]="userUrl">{{username}}</a>
-    </div>
-  `
-})
-class Comment {
-  @Input() username: string;
-  @Input() userUrl: string;
-  @Input() content: string;
-  @Input() createdAt: Date;
-}
+import GraphQL from '../graphql';
 
 @Component({
   selector: 'comments-page',
-  directives: [
-    Loading,
-    Comment,
-    RepoInfo
-  ],
   template: `
   <loading *ngIf="data.loading"></loading>
   <div *ngIf="!data.loading">
@@ -54,7 +26,6 @@ class Comment {
       </repo-info>
       <form *ngIf="data.currentUser" (ngSubmit)="submitForm()">
           <div class="form-group">
-
             <input
               type="text"
               class="form-control"
@@ -64,15 +35,12 @@ class Comment {
               placeholder="Write your comment here!"
             />
           </div>
-
           <div *ngIf="submitComment.errors" class="alert alert-danger" role="alert">
             {{submitComment.errors[0].message}}
           </div>
-
           <div *ngIf="noCommentContent" class="alert alert-danger" role="alert">
             Comment must have content.
           </div>
-
           <button type="submit" class="btn btn-primary">
             Submit
           </button>
@@ -92,9 +60,8 @@ class Comment {
     </div>
   `
 })
-@Apollo({
-  client,
-  queries(context: CommentsPage) {
+@GraphQL({
+  queries(context: CommentsPageComponent) {
     return {
       data: {
         query: gql`
@@ -137,7 +104,7 @@ class Comment {
       },
     };
   },
-  mutations(context: CommentsPage) {
+  mutations(context: CommentsPageComponent) {
     return {
       submitComment: (repoFullName, repoId, commentContent, currentUser) => ({
         mutation: gql`
@@ -177,12 +144,13 @@ class Comment {
     };
   },
 })
-export class CommentsPage implements OnInit {
+export class CommentsPageComponent implements OnInit, OnDestroy {
   org: string;
   repoName: string;
   data: any;
   newComment: string;
   noCommentContent: boolean;
+  paramsSub: Subscription;
   submitComment: (
       repoFullName: string,
       repoId: string,
@@ -195,7 +163,7 @@ export class CommentsPage implements OnInit {
   }
 
   ngOnInit() {
-    this.route.params
+    this.paramsSub = this.route.params
       .subscribe(params => {
         this.org = params['org'];
         this.repoName = params['repoName'];
@@ -216,5 +184,9 @@ export class CommentsPage implements OnInit {
         this.newComment = '';
       });
     }
+  }
+
+  ngOnDestroy() {
+    this.paramsSub.unsubscribe();
   }
 }
