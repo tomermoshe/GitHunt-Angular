@@ -9,7 +9,7 @@ Please submit a pull request if you see anything that can be improved!
 
 ## Running the app
 
-### 0. This repository is only the React frontend.
+### 0. This repository is only the Angular frontend.
 
 Run the [GitHunt API](https://github.com/apollostack/GitHunt-API) first.
 (This is temporary, until we have a permanently hosted demo server.)
