@@ -1,30 +1,76 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { ApolloQueryResult } from 'apollo-client';
+import { Angular2Apollo, ApolloQueryObservable } from 'angular2-apollo';
 import { Subscription } from 'rxjs/Subscription';
+import { Subject } from 'rxjs/Subject';
 
 import gql from 'graphql-tag';
 
-import GraphQL from '../graphql';
+const commentQuery = gql`
+  query Comment($repoName: String!) {
+    # Eventually move this into a no fetch query right on the entry
+    # since we literally just need this info to determine whether to
+    # show upvote/downvote buttons
+    currentUser {
+      login
+      html_url
+    }
+    entry(repoFullName: $repoName) {
+      id
+      postedBy {
+        login
+        html_url
+      }
+      createdAt
+      comments {
+        postedBy {
+          login
+          html_url
+        }
+        createdAt
+        content
+      }
+      repository {
+        full_name
+        html_url
+        description
+        open_issues_count
+        stargazers_count
+      }
+    }
+  }
+`;
+const submitCommentMutation = gql`
+  mutation submitComment($repoFullName: String!, $commentContent: String!) {
+    submitComment(repoFullName: $repoFullName, commentContent: $commentContent) {
+      postedBy {
+        login
+        html_url
+      }
+      createdAt
+      content
+    }
+  }
+`;
 
 @Component({
   selector: 'comments-page',
   template: `
-  <loading *ngIf="data.loading"></loading>
-  <div *ngIf="!data.loading">
+  <loading *ngIf="loading"></loading>
+  <div *ngIf="!loading">
     <div>
-      <h1>Comments for <a [href]="data.entry.repository.html_url">{{data.entry.repository.full_name}}</a></h1>
+      <h1>Comments for <a [href]="entry.repository.html_url">{{entry.repository.full_name}}</a></h1>
       <repo-info
-        [fullName]="data.entry.repository.full_name"
-        [description]="data.entry.repository.description"
-        [stargazersCount]="data.entry.repository.stargazers_count"
-        [openIssuesCount]="data.entry.repository.open_issues_count"
-        [createdAt]="data.entry.createdAt"
-        [userUrl]="data.entry.postedBy.html_url"
-        [username]="data.entry.postedBy.login"
-        [commentCount]="data.entry.commentCount">
+        [fullName]="entry.repository.full_name"
+        [description]="entry.repository.description"
+        [stargazersCount]="entry.repository.stargazers_count"
+        [openIssuesCount]="entry.repository.open_issues_count"
+        [createdAt]="entry.createdAt"
+        [userUrl]="entry.postedBy.html_url"
+        [username]="entry.postedBy.login"
+        [commentCount]="entry.commentCount">
       </repo-info>
-      <form *ngIf="data.currentUser" (ngSubmit)="submitForm()">
+      <form *ngIf="currentUser" (ngSubmit)="submitForm()">
           <div class="form-group">
             <input
               type="text"
@@ -45,12 +91,12 @@ import GraphQL from '../graphql';
             Submit
           </button>
         </form>
-        <div *ngIf="!data.currentUser"><em>Log in to comment.</em></div>
+        <div *ngIf="!currentUser"><em>Log in to comment.</em></div>
       </div>
       <br />
-      <div *ngIf="data.entry.comments">
+      <div *ngIf="entry.comments">
         <comment
-          *ngFor="let comment of data.entry.comments"
+          *ngFor="let comment of entry.comments"
           [username]="comment.postedBy.login"
           [content]="comment.content"
           [createdAt]="comment.createdAt"
@@ -60,76 +106,67 @@ import GraphQL from '../graphql';
     </div>
   `
 })
-@GraphQL({
-  queries(context: CommentsPageComponent) {
-    return {
-      data: {
-        query: gql`
-          query Comment($repoName: String!) {
-            # Eventually move this into a no fetch query right on the entry
-            # since we literally just need this info to determine whether to
-            # show upvote/downvote buttons
-            currentUser {
-              login
-              html_url
-            }
-            entry(repoFullName: $repoName) {
-              id
-              postedBy {
-                login
-                html_url
-              }
-              createdAt
-              comments {
-                postedBy {
-                  login
-                  html_url
-                }
-                createdAt
-                content
-              }
-              repository {
-                full_name
-                html_url
-                description
-                open_issues_count
-                stargazers_count
-              }
-            }
-          }
-        `,
-        variables: {
-          repoName: `${context.org}/${context.repoName}`,
-        },
+export class CommentsPageComponent implements OnInit, OnDestroy {
+  newComment: string;
+  noCommentContent: boolean;
+  entry: any;
+  currentUser: any;
+  loading: boolean = true;
+  repoName: Subject<string> = new Subject<string>();
+  paramsSub: Subscription;
+  entryObs: ApolloQueryObservable<any>;
+  entrySub: Subscription;
+
+  constructor(
+    private route: ActivatedRoute,
+    private apollo: Angular2Apollo
+  ) {
+    this.noCommentContent = false;
+  }
+
+  ngOnInit() {
+    this.paramsSub = this.route.params
+      .subscribe(params => {
+        this.loading = true;
+        this.repoName.next(`${params['org']}/${params['repoName']}`);
+      });
+
+    this.entryObs = this.apollo.watchQuery({
+      query: commentQuery,
+      variables: {
+        repoName: this.repoName,
       },
-    };
-  },
-  mutations(context: CommentsPageComponent) {
-    return {
-      submitComment: (repoFullName, repoId, commentContent, currentUser) => ({
-        mutation: gql`
-          mutation submitComment($repoFullName: String!, $commentContent: String!) {
-            submitComment(repoFullName: $repoFullName, commentContent: $commentContent) {
-              postedBy {
-                login
-                html_url
-              }
-              createdAt
-              content
-            }
-          }
-        `,
+    });
+
+    this.entrySub = this.entryObs.subscribe(({data, loading}) => {
+      this.entry = data.entry;
+      this.currentUser = data.currentUser;
+      this.loading = loading;
+    });
+  }
+
+  submitForm() {
+    this.noCommentContent = false;
+
+    const repositoryName = this.entry.repository.full_name;
+    const repoId = this.entry.id;
+
+    if (!this.newComment) {
+      this.noCommentContent = true;
+    } else {
+      this.apollo.mutate({
+        mutation: submitCommentMutation,
         variables: {
-          repoFullName,
-          commentContent,
+          repoFullName: repositoryName,
+          commentContent: this.newComment,
         },
         optimisticResponse: {
          __typename: 'Mutation',
          submitComment: {
            __typename: 'Comment',
-           postedBy: currentUser,
+           postedBy: this.currentUser,
            createdAt: +new Date,
-           content: commentContent,
+           content: this.newComment,
          },
        },
        resultBehaviors: [
@@ -140,47 +177,7 @@ import GraphQL from '../graphql';
            where: 'PREPEND',
          },
        ],
-     }),
-    };
-  },
-})
-export class CommentsPageComponent implements OnInit, OnDestroy {
-  org: string;
-  repoName: string;
-  data: any;
-  newComment: string;
-  noCommentContent: boolean;
-  paramsSub: Subscription;
-  submitComment: (
-      repoFullName: string,
-      repoId: string,
-      commentContent: string,
-      currentUser: string
-    ) => Promise<ApolloQueryResult>;
-
-  constructor(private route: ActivatedRoute) {
-    this.noCommentContent = false;
-  }
-
-  ngOnInit() {
-    this.paramsSub = this.route.params
-      .subscribe(params => {
-        this.org = params['org'];
-        this.repoName = params['repoName'];
-      });
-  }
-
-  submitForm() {
-    this.noCommentContent = false;
-
-    const repositoryName = this.data.entry.repository.full_name;
-    const repoId = this.data.entry.id;
-    const currentUser = this.data.currentUser;
-
-    if (!this.newComment) {
-      this.noCommentContent = true;
-    } else {
-      this.submitComment(repositoryName, repoId, this.newComment, currentUser).then(() => {
+      }).then(() => {
         this.newComment = '';
       });
     }
@@ -188,5 +185,6 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.paramsSub.unsubscribe();
+    this.entrySub.unsubscribe();
   }
 }

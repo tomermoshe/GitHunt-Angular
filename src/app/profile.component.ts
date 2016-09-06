@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Angular2Apollo } from 'angular2-apollo';
+import { Subscription } from 'rxjs/Subscription';
 
 import gql from 'graphql-tag';
-
-import GraphQL from './graphql';
 
 const CurrentUserQuery = gql`
   query CurrentUserForProfile {
@@ -16,12 +16,12 @@ const CurrentUserQuery = gql`
 @Component({
   selector: 'profile',
   template: `
-    <p *ngIf="data.loading" class="navbar-text navbar-right">
+    <p *ngIf="loading" class="navbar-text navbar-right">
       Loading...
     </p>
-    <span *ngIf="!data.loading && data.currentUser">
+    <span *ngIf="!loading && currentUser">
       <p class="navbar-text navbar-right">
-        {{data.currentUser.login}}
+        {{currentUser.login}}
         &nbsp;
         <a href="/logout">Log out</a>
       </p>
@@ -33,20 +33,30 @@ const CurrentUserQuery = gql`
           Submit
       </a>
     </span>
-    <p *ngIf="!data.loading && !data.currentUser" class="navbar-text navbar-right">
+    <p *ngIf="!loading && !currentUser" class="navbar-text navbar-right">
       <a href="/login/github">Log in with GitHub</a>
     </p>
   `
 })
-@GraphQL({
-  queries() {
-    return {
-      data: {
-        query: CurrentUserQuery,
-      }
-    };
+export class ProfileComponent implements OnInit, OnDestroy {
+  loading: boolean = true;
+  currentUser: any;
+  currentUserSub: Subscription;
+
+  constructor(
+    private apollo: Angular2Apollo
+  ) {}
+
+  ngOnInit() {
+    this.currentUserSub = this.apollo.watchQuery({
+      query: CurrentUserQuery,
+    }).subscribe(({data, loading}) => {
+      this.currentUser = data.currentUser;
+      this.loading = loading;
+    });
   }
-})
-export class ProfileComponent {
-  data: any;
+
+  ngOnDestroy() {
+    this.currentUserSub.unsubscribe();
+  }
 }

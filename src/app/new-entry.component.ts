@@ -1,10 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { ApolloQueryResult } from 'apollo-client';
+import { Angular2Apollo } from 'angular2-apollo';
 
 import gql from 'graphql-tag';
-
-import GraphQL from './graphql';
 
 @Component({
   selector: 'new-entry',
@@ -40,30 +38,14 @@ import GraphQL from './graphql';
     </div>
   `
 })
-@GraphQL({
-  mutations(context: NewEntryComponent) {
-    return {
-      submitRepository: (repoFullName) => ({
-        mutation: gql`
-          mutation submitRepository($repoFullName: String!) {
-            submitRepository(repoFullName: $repoFullName) {
-              createdAt
-            }
-          }
-        `,
-        variables: {
-          repoFullName,
-        },
-      }),
-    };
-  }
-})
 export class NewEntryComponent {
   error: string;
   repoFullName: string;
-  submitRepository: (repoFullName: string) => Promise<ApolloQueryResult>;
 
-  constructor(private router: Router) { }
+  constructor(
+    private router: Router,
+    private apollo: Angular2Apollo
+  ) { }
 
   _submitForm(): void {
     if (!this.repoFullName) {
@@ -71,7 +53,19 @@ export class NewEntryComponent {
     }
 
     this.error = null;
-    this.submitRepository(this.repoFullName).then(() => {
+
+    this.apollo.mutate({
+      mutation: gql`
+        mutation submitRepository($repoFullName: String!) {
+          submitRepository(repoFullName: $repoFullName) {
+            createdAt
+          }
+        }
+      `,
+      variables: {
+        repoFullName: this.repoFullName,
+      },
+    }).then(() => {
       this.router.navigate(['/feed/new']);
     }).catch((error) => {
       this.error = error.message;
