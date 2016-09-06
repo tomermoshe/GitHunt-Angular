@@ -67,7 +67,7 @@ import GraphQL from '../graphql';
         },
         forceFetch: true,
       }
-    }
+    };
   },
   mutations(context: FeedComponent) {
     return {

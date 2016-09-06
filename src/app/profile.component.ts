@@ -42,14 +42,7 @@ const CurrentUserQuery = gql`
   queries() {
     return {
       data: {
-        query: gql`
-          query CurrentUserForProfile {
-            currentUser {
-              login
-              avatar_url
-            }
-          }
-        `
+        query: CurrentUserQuery,
       }
     };
   }

@@ -61,7 +61,7 @@ import GraphQL from './graphql';
 export class NewEntryComponent {
   error: string;
   repoFullName: string;
-  submitRepository: (repoFullName: string) => Promise<ApolloQueryResult>
+  submitRepository: (repoFullName: string) => Promise<ApolloQueryResult>;
 
   constructor(private router: Router) { }
 
@@ -71,7 +71,7 @@ export class NewEntryComponent {
     }
 
     this.error = null;
-    this.submitRepository(this.repoFullName).then(({ data }) => {
+    this.submitRepository(this.repoFullName).then(() => {
       this.router.navigate(['/feed/new']);
     }).catch((error) => {
       this.error = error.message;
