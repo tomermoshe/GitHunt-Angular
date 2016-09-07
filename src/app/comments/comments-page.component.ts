@@ -6,7 +6,7 @@ import { Subject } from 'rxjs/Subject';
 
 import gql from 'graphql-tag';
 
-const commentQuery = gql`
+export const commentQuery = gql`
   query Comment($repoName: String!) {
     # Eventually move this into a no fetch query right on the entry
     # since we literally just need this info to determine whether to
@@ -81,8 +81,8 @@ const submitCommentMutation = gql`
               placeholder="Write your comment here!"
             />
           </div>
-          <div *ngIf="submitComment.errors" class="alert alert-danger" role="alert">
-            {{submitComment.errors[0].message}}
+          <div *ngIf="errors" class="alert alert-danger" role="alert">
+            {{errors[0].message}}
           </div>
           <div *ngIf="noCommentContent" class="alert alert-danger" role="alert">
             Comment must have content.
@@ -116,6 +116,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   paramsSub: Subscription;
   entryObs: ApolloQueryObservable<any>;
   entrySub: Subscription;
+  errors: any[];
 
   constructor(
     private route: ActivatedRoute,
@@ -125,12 +126,6 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
-    this.paramsSub = this.route.params
-      .subscribe(params => {
-        this.loading = true;
-        this.repoName.next(`${params['org']}/${params['repoName']}`);
-      });
-
     this.entryObs = this.apollo.watchQuery({
       query: commentQuery,
       variables: {
@@ -143,6 +138,12 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
       this.currentUser = data.currentUser;
       this.loading = loading;
     });
+
+    this.paramsSub = this.route.params
+      .subscribe(params => {
+        this.loading = true;
+        this.repoName.next(`${params['org']}/${params['repoName']}`);
+      });
   }
 
   submitForm() {
@@ -179,6 +180,8 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
        ],
       }).then(() => {
         this.newComment = '';
+      }).catch(errors => {
+        this.errors =  errors;
       });
     }
   }

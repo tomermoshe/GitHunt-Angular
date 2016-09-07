@@ -1,4 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { Angular2Apollo } from 'angular2-apollo';
+
+import { commentQuery } from '../comments/comments-page.component';
 
 @Component({
   selector: 'repo-info',
@@ -16,7 +19,7 @@ import { Component, OnInit, Input } from '@angular/core';
       </info-label>
       <span *ngIf="commentCount || commentCount === 0">
         &nbsp;
-        <a [routerLink]="['/', org, repoName]">
+        <a [routerLink]="['/', org, repoName]" (mouseover)="prefetchComments(fullName)">
         View comments ({{ commentCount }})
         </a>
       </span>
@@ -40,10 +43,20 @@ export class RepoInfoComponent implements OnInit {
   org: string;
   repoName: string;
 
+  constructor(private apollo: Angular2Apollo) {}
+
   ngOnInit() {
     const parts = this.fullName.split('/');
 
     this.org = parts[0];
     this.repoName = parts[1];
+  }
+
+  prefetchComments(repoFullName: string) {
+    console.log('on', repoFullName);
+    this.apollo.query({
+      query: commentQuery,
+      variables: { repoName: repoFullName },
+    });
   }
 }
