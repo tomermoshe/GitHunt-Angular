@@ -9,8 +9,12 @@ interface Result {
 }
 
 export const client = new ApolloClient({
-  networkInterface: createNetworkInterface('/graphql', {
-    credentials: 'same-origin',
+  networkInterface: createNetworkInterface({
+    uri: '/graphql',
+    opts: {
+      credentials: 'same-origin',
+    },
+    transportBatching: true,
   }),
   queryTransformer: addTypename,
   dataIdFromObject: (result: Result) => {
