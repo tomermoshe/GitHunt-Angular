@@ -2,7 +2,7 @@
 // https://github.com/typings/typings
 // https://www.typescriptlang.org/docs/handbook/writing-declaration-files.html
 
-/// <reference types="graphql-typings" />
+/// <reference types="typed-graphql" />
 
 declare module 'node-emoji' {
   export function emojify(input: string): string;

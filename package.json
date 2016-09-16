@@ -33,9 +33,9 @@
     "@types/node": "^6.0.38",
     "angular-cli": "1.0.0-beta.11-webpack.8",
     "codelyzer": "~0.0.26",
-    "graphql-typings": "0.0.1-beta-2",
     "ts-node": "1.2.1",
     "tslint": "3.13.0",
+    "typed-graphql": "^1.0.1",
     "typescript": "^2.0.0"
   }
 }
