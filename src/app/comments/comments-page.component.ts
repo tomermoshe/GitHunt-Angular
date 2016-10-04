@@ -23,6 +23,7 @@ export const commentQuery = gql`
       }
       createdAt
       comments {
+        id
         postedBy {
           login
           html_url
@@ -40,9 +41,10 @@ export const commentQuery = gql`
     }
   }
 `;
-const submitCommentMutation = gql`
-  mutation submitComment($repoFullName: String!, $commentContent: String!) {
-    submitComment(repoFullName: $repoFullName, commentContent: $commentContent) {
+const subscriptionQuery = gql`
+  subscription onCommentAdded($repoFullName: String!){
+    commentAdded(repoFullName: $repoFullName){
+      id
       postedBy {
         login
         html_url
@@ -52,6 +54,27 @@ const submitCommentMutation = gql`
     }
   }
 `;
+const submitCommentMutation = gql`
+  mutation submitComment($repoFullName: String!, $commentContent: String!) {
+    submitComment(repoFullName: $repoFullName, commentContent: $commentContent) {
+      id
+      postedBy {
+        login
+        html_url
+      }
+      createdAt
+      content
+    }
+  }
+`;
+
+// helper function checks for duplicate comments, which we receive because we
+// get subscription updates for our own comments as well.
+// TODO it's pretty inefficient to scan all the comments every time.
+// maybe only scan the first 10, or up to a certain timestamp
+function isDuplicateComment(newComment, existingComments) {
+  return newComment.id !== null && existingComments.some(comment => newComment.id === comment.id);
+}
 
 @Component({
   selector: 'comments-page',
@@ -117,6 +140,8 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   entryObs: ApolloQueryObservable<any>;
   entrySub: Subscription;
   errors: any[];
+  subscriptionRepoName: string;
+  subscriptionSub: Subscription;
 
   constructor(
     private route: ActivatedRoute,
@@ -141,8 +166,16 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
 
     this.paramsSub = this.route.params
       .subscribe(params => {
+        const repoName = `${params['org']}/${params['repoName']}`;
+
         this.loading = true;
-        this.repoName.next(`${params['org']}/${params['repoName']}`);
+        this.repoName.next(repoName);
+
+        // subscribe to comments
+        if (this.subscriptionSub) {
+          this.subscriptionSub.unsubscribe();
+        }
+        this.subscribe(repoName);
       });
   }
 
@@ -150,7 +183,6 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
     this.noCommentContent = false;
 
     const repositoryName = this.entry.repository.full_name;
-    const repoId = this.entry.id;
 
     if (!this.newComment) {
       this.noCommentContent = true;
@@ -162,22 +194,32 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
           commentContent: this.newComment,
         },
         optimisticResponse: {
-         __typename: 'Mutation',
-         submitComment: {
-           __typename: 'Comment',
-           postedBy: this.currentUser,
-           createdAt: +new Date,
-           content: this.newComment,
-         },
-       },
-       resultBehaviors: [
-         {
-           type: 'ARRAY_INSERT',
-           resultPath: [ 'submitComment' ],
-           storePath: [ 'Entry' + repoId, 'comments' ],
-           where: 'PREPEND',
-         },
-       ],
+          __typename: 'Mutation',
+          submitComment: {
+            __typename: 'Comment',
+            id: null,
+            postedBy: this.currentUser,
+            createdAt: +new Date,
+            content: this.newComment,
+          },
+        },
+        updateQueries: {
+          Comment: (prev, { mutationResult }) => {
+            const newComment = mutationResult.data.submitComment;
+
+            if (isDuplicateComment(newComment, prev.entry.comments)) {
+              return prev;
+            }
+
+            const newEntry = Object.assign({}, prev.entry, {
+              comments: [newComment, ...prev.entry.comments],
+            });
+
+            return Object.assign({}, prev, {
+              entry: newEntry,
+            });
+          },
+        },
       }).then(() => {
         this.newComment = '';
       }).catch(errors => {
@@ -186,8 +228,38 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
     }
   }
 
+  subscribe(repoName: string) {
+    this.subscriptionRepoName = repoName;
+    this.subscriptionSub = this.apollo.subscribe({
+      query: subscriptionQuery,
+      variables: { repoFullName: repoName },
+    }).subscribe({
+      next: (data) => {
+        const newComment = data.commentAdded;
+
+        this.entryObs.updateQuery((previousResult) => {
+          if (isDuplicateComment(newComment, previousResult.entry.comments)) {
+            return previousResult;
+          }
+
+          const newEntry = Object.assign({}, previousResult.entry, {
+            comments: [newComment, ...previousResult.entry.comments],
+          });
+
+          return Object.assign({}, previousResult, {
+            entry: newEntry,
+          });
+        });
+      },
+      error(err) {
+        console.error('err', err);
+      },
+    });
+  }
+
   ngOnDestroy() {
     this.paramsSub.unsubscribe();
     this.entrySub.unsubscribe();
+    this.subscriptionSub.unsubscribe();
   }
 }
