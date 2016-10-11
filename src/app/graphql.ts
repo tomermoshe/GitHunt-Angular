@@ -1,6 +1,6 @@
-import { Apollo } from 'angular2-apollo';
+import {Apollo} from 'angular2-apollo';
 
-import { client } from './client';
+import {client} from './client';
 
 export default function GraphQL(options) {
   if (!options.client) {

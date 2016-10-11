@@ -1,11 +1,11 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Angular2Apollo, ApolloQueryObservable } from 'angular2-apollo';
-import { createFragment } from 'apollo-client';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Angular2Apollo, ApolloQueryObservable} from 'angular2-apollo';
+import {createFragment} from 'apollo-client';
+import {Subscription} from 'rxjs/Subscription';
+import {Subject} from 'rxjs/Subject';
 
-import { OnVoteEvent } from './feed-entry.component';
+import {OnVoteEvent} from './feed-entry.component';
 
 import gql from 'graphql-tag';
 
@@ -63,20 +63,19 @@ const voteMutation = gql`
   templateUrl: 'feed.component.html'
 })
 export class FeedComponent implements OnInit, OnDestroy {
-  feed: any;
-  currentUser: any;
-  loading: boolean = true;
-  type: Subject<string> = new Subject<string>();
-  offset: number = 0;
-  itemsPerPage: number = 10;
-  paramsSub: Subscription;
-  feedSub: Subscription;
-  feedObs: ApolloQueryObservable<any>;
+  feed:any;
+  currentUser:any;
+  loading:boolean = true;
+  type:Subject<string> = new Subject<string>();
+  offset:number = 0;
+  itemsPerPage:number = 10;
+  paramsSub:Subscription;
+  feedSub:Subscription;
+  feedObs:ApolloQueryObservable<any>;
 
-  constructor(
-    private route: ActivatedRoute,
-    private apollo: Angular2Apollo
-  ) {}
+  constructor(private route:ActivatedRoute,
+              private apollo:Angular2Apollo) {
+  }
 
   ngOnInit() {
     this.feedObs = this.apollo.watchQuery({
@@ -102,7 +101,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     });
   }
 
-  onVote(event: OnVoteEvent): void {
+  onVote(event:OnVoteEvent):void {
     this.apollo.mutate({
       mutation: voteMutation,
       variables: {
@@ -117,8 +116,10 @@ export class FeedComponent implements OnInit, OnDestroy {
       variables: {
         offset: this.offset + this.itemsPerPage,
       },
-      updateQuery: (prev, { fetchMoreResult }) => {
-        if (!fetchMoreResult.data) { return prev; }
+      updateQuery: (prev, {fetchMoreResult}) => {
+        if (!fetchMoreResult.data) {
+          return prev;
+        }
         return Object.assign({}, prev, {
           feed: [...prev.feed, ...fetchMoreResult.data.feed],
         });

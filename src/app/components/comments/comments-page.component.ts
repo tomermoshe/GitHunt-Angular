@@ -1,8 +1,8 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
-import { Angular2Apollo, ApolloQueryObservable } from 'angular2-apollo';
-import { Subscription } from 'rxjs/Subscription';
-import { Subject } from 'rxjs/Subject';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {ActivatedRoute} from '@angular/router';
+import {Angular2Apollo, ApolloQueryObservable} from 'angular2-apollo';
+import {Subscription} from 'rxjs/Subscription';
+import {Subject} from 'rxjs/Subject';
 
 import gql from 'graphql-tag';
 
@@ -81,23 +81,21 @@ function isDuplicateComment(newComment, existingComments) {
   templateUrl: 'comments-page.component.html'
 })
 export class CommentsPageComponent implements OnInit, OnDestroy {
-  newComment: string;
-  noCommentContent: boolean;
-  entry: any;
-  currentUser: any;
-  loading: boolean = true;
-  repoName: Subject<string> = new Subject<string>();
-  paramsSub: Subscription;
-  entryObs: ApolloQueryObservable<any>;
-  entrySub: Subscription;
-  errors: any[];
-  subscriptionRepoName: string;
-  subscriptionSub: Subscription;
+  newComment:string;
+  noCommentContent:boolean;
+  entry:any;
+  currentUser:any;
+  loading:boolean = true;
+  repoName:Subject<string> = new Subject<string>();
+  paramsSub:Subscription;
+  entryObs:ApolloQueryObservable<any>;
+  entrySub:Subscription;
+  errors:any[];
+  subscriptionRepoName:string;
+  subscriptionSub:Subscription;
 
-  constructor(
-    private route: ActivatedRoute,
-    private apollo: Angular2Apollo
-  ) {
+  constructor(private route:ActivatedRoute,
+              private apollo:Angular2Apollo) {
     this.noCommentContent = false;
   }
 
@@ -155,7 +153,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
           },
         },
         updateQueries: {
-          Comment: (prev, { mutationResult }) => {
+          Comment: (prev, {mutationResult}) => {
             const newComment = mutationResult.data.submitComment;
 
             if (isDuplicateComment(newComment, prev.entry.comments)) {
@@ -174,16 +172,16 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
       }).then(() => {
         this.newComment = '';
       }).catch(errors => {
-        this.errors =  errors;
+        this.errors = errors;
       });
     }
   }
 
-  subscribe(repoName: string) {
+  subscribe(repoName:string) {
     this.subscriptionRepoName = repoName;
     this.subscriptionSub = this.apollo.subscribe({
       query: subscriptionQuery,
-      variables: { repoFullName: repoName },
+      variables: {repoFullName: repoName},
     }).subscribe({
       next: (data) => {
         const newComment = data.commentAdded;

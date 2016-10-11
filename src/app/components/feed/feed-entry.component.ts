@@ -1,8 +1,8 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {Component, OnInit, Input, Output, EventEmitter} from '@angular/core';
 
 export interface OnVoteEvent {
-  repoFullName: string;
-  type: string;
+  repoFullName:string;
+  type:string;
 }
 
 @Component({
@@ -12,9 +12,9 @@ export interface OnVoteEvent {
 export class FeedEntryComponent implements OnInit {
   @Input() entry;
   @Input() currentUser;
-  @Output() onVote: EventEmitter<OnVoteEvent> = new EventEmitter<OnVoteEvent>();
-  org: string;
-  repoName: string;
+  @Output() onVote:EventEmitter<OnVoteEvent> = new EventEmitter<OnVoteEvent>();
+  org:string;
+  repoName:string;
 
   ngOnInit() {
     const parts = this.entry.repository.full_name.split('/');
@@ -23,7 +23,7 @@ export class FeedEntryComponent implements OnInit {
     this.repoName = parts[1];
   }
 
-  onButtonVote(type: string): void {
+  onButtonVote(type:string):void {
     this.onVote.emit({
       repoFullName: this.entry.repository.full_name,
       type,

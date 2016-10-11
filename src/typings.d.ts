@@ -5,5 +5,5 @@
 /// <reference types="typed-graphql" />
 
 declare module 'node-emoji' {
-  export function emojify(input: string): string;
+  export function emojify(input:string):string;
 }

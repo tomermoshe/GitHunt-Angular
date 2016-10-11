@@ -1,6 +1,6 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { Angular2Apollo } from 'angular2-apollo';
+import {Component} from '@angular/core';
+import {Router} from '@angular/router';
+import {Angular2Apollo} from 'angular2-apollo';
 
 import gql from 'graphql-tag';
 
@@ -9,13 +9,12 @@ import gql from 'graphql-tag';
   templateUrl: 'new-entry.component.html'
 })
 export class NewEntryComponent {
-  error: string;
-  repoFullName: string;
+  error:string;
+  repoFullName:string;
 
-  constructor(
-    private router: Router,
-    private apollo: Angular2Apollo
-  ) { }
+  constructor(private router:Router,
+              private apollo:Angular2Apollo) {
+  }
 
   _submitForm(): void {
     if (!this.repoFullName) {
