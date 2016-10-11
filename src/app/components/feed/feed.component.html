@@ -3,13 +3,13 @@
 
   <div class="form-group">
     <input
+      #term
       type="text"
       class="form-control"
       id="searchInput"
       placeholder="Search..."
       name="searchInput"
-      required
-    />
+      (keyup)="search(term.value)">
   </div>
 
   <div>
