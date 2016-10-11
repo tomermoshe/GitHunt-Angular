@@ -60,19 +60,7 @@ const voteMutation = gql`
 
 @Component({
   selector: 'feed',
-  template: `
-    <loading *ngIf="loading"></loading>
-    <div *ngIf="!loading">
-      <feed-entry
-        *ngFor="let entry of feed"
-        [entry]="entry"
-        [currentUser]="currentUser"
-        (onVote)="onVote($event)">
-      </feed-entry>
-
-      <a (click)="fetchMore()">Load more</a>
-    </div>
-  `
+  templateUrl: './feed.component.html'
 })
 export class FeedComponent implements OnInit, OnDestroy {
   feed: any;

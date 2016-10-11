@@ -1,0 +1,36 @@
+<div class="media">
+  <div class="media-vote">
+    <vote-buttons
+      [score]="entry.score"
+      [vote]="entry.vote"
+      [canVote]="!!currentUser"
+      (onVote)="onButtonVote($event)">
+    </vote-buttons>
+  </div>
+  <div class="media-left">
+    <a href="#">
+      <img
+        class="media-object"
+        style="width: 64px; height: 64px"
+        [src]="entry.repository.owner.avatar_url"
+      />
+    </a>
+  </div>
+  <div class="media-body">
+    <h4 class="media-heading">
+      <a [href]="entry.repository.html_url">
+        {{ entry.repository.full_name }}
+      </a>
+    </h4>
+    <repo-info
+      [fullName]="entry.repository.full_name"
+      [description]="entry.repository.description"
+      [stargazersCount]="entry.repository.stargazers_count"
+      [openIssuesCount]="entry.repository.open_issues_count"
+      [createdAt]="entry.createdAt"
+      [userUrl]="entry.postedBy.html_url"
+      [username]="entry.postedBy.login"
+      [commentCount]="entry.commentCount">
+    </repo-info>
+  </div>
+</div>

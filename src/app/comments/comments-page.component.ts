@@ -78,56 +78,7 @@ function isDuplicateComment(newComment, existingComments) {
 
 @Component({
   selector: 'comments-page',
-  template: `
-  <loading *ngIf="loading"></loading>
-  <div *ngIf="!loading">
-    <div>
-      <h1>Comments for <a [href]="entry.repository.html_url">{{entry.repository.full_name}}</a></h1>
-      <repo-info
-        [fullName]="entry.repository.full_name"
-        [description]="entry.repository.description"
-        [stargazersCount]="entry.repository.stargazers_count"
-        [openIssuesCount]="entry.repository.open_issues_count"
-        [createdAt]="entry.createdAt"
-        [userUrl]="entry.postedBy.html_url"
-        [username]="entry.postedBy.login"
-        [commentCount]="entry.commentCount">
-      </repo-info>
-      <form *ngIf="currentUser" (ngSubmit)="submitForm()">
-          <div class="form-group">
-            <input
-              type="text"
-              class="form-control"
-              id="newComment"
-              name="newCommentContent"
-              [(ngModel)]="newComment"
-              placeholder="Write your comment here!"
-            />
-          </div>
-          <div *ngIf="errors" class="alert alert-danger" role="alert">
-            {{errors[0].message}}
-          </div>
-          <div *ngIf="noCommentContent" class="alert alert-danger" role="alert">
-            Comment must have content.
-          </div>
-          <button type="submit" class="btn btn-primary">
-            Submit
-          </button>
-        </form>
-        <div *ngIf="!currentUser"><em>Log in to comment.</em></div>
-      </div>
-      <br />
-      <div *ngIf="entry.comments">
-        <comment
-          *ngFor="let comment of entry.comments"
-          [username]="comment.postedBy.login"
-          [content]="comment.content"
-          [createdAt]="comment.createdAt"
-          [userUrl]="comment.postedBy.html_url">
-        </comment>
-      </div>
-    </div>
-  `
+  templateUrl: './comments-page.component.html'
 })
 export class CommentsPageComponent implements OnInit, OnDestroy {
   newComment: string;

@@ -2,24 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'vote-buttons',
-  template: `
-    <span>
-      <button
-        class="btn btn-score"
-        [ngClass]="{active: vote.vote_value === 1}"
-        (click)="voteUp()">
-        <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
-      </button>
-      <div class="vote-score">{{ score }}</div>
-      <button
-        class="btn btn-score"
-        [ngClass]="{active: vote.vote_value === -1}"
-        (click)="voteDown()">
-        <span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
-      </button>
-      &nbsp;
-    </span>
-  `
+  templateUrl: './vote-buttons.component.html'
 })
 export class VoteButtonsComponent {
   @Input() canVote: boolean;

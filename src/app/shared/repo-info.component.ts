@@ -5,30 +5,7 @@ import { commentQuery } from '../comments/comments-page.component';
 
 @Component({
   selector: 'repo-info',
-  template: `
-    <p> {{ description | emojify }}</p>
-    <p>
-      <info-label
-        label="Stars"
-        [value]="stargazersCount">
-      </info-label>
-      &nbsp;
-      <info-label
-        label="Issues"
-        [value]="openIssuesCount">
-      </info-label>
-      <span *ngIf="commentCount || commentCount === 0">
-        &nbsp;
-        <a [routerLink]="['/', org, repoName]" (mouseover)="prefetchComments(fullName)">
-        View comments ({{ commentCount }})
-        </a>
-      </span>
-      &nbsp;&nbsp;&nbsp;
-      Submitted <!--{{ createdAt | amTimeAgo }}-->
-      &nbsp;by&nbsp;
-      <a [href]="userUrl">{{ username }}</a>
-    </p>
-  `
+  templateUrl: './repo-info.component.html'
 })
 export class RepoInfoComponent implements OnInit {
   @Input() fullName: string;

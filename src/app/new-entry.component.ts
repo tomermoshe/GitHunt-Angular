@@ -6,37 +6,7 @@ import gql from 'graphql-tag';
 
 @Component({
   selector: 'new-entry',
-  template: `
-    <div>
-      <h1>Submit a repository</h1>
-
-      <form (ngSubmit)="_submitForm()">
-        <div class="form-group">
-          <label for="repositoryInput">
-            Repository name
-          </label>
-
-          <input
-            type="text"
-            class="form-control"
-            id="repositoryInput"
-            placeholder="apollostack/GitHunt"
-            [(ngModel)]="repoFullName"
-            name="repoFullName"
-            required
-          />
-        </div>
-
-        <div *ngIf="error" class="alert alert-danger" role="alert">
-          {{ error }}
-        </div>
-
-        <button type="submit" class="btn btn-primary">
-          Submit
-        </button>
-      </form>
-    </div>
-  `
+  templateUrl: './new-entry.component.html'
 })
 export class NewEntryComponent {
   error: string;
