@@ -5,7 +5,7 @@ import { commentQuery } from '../comments/comments-page.component';
 
 @Component({
   selector: 'repo-info',
-  templateUrl: './repo-info.component.html'
+  templateUrl: 'repo-info.component.html'
 })
 export class RepoInfoComponent implements OnInit {
   @Input() fullName: string;

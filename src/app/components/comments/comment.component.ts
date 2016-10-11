@@ -2,7 +2,7 @@ import { Component, Input } from  '@angular/core';
 
 @Component({
   selector: 'comment',
-  templateUrl: './comment.component.html'
+  templateUrl: 'comment.component.html'
 })
 export class CommentComponent {
   @Input() username: string;

@@ -7,7 +7,7 @@ export interface OnVoteEvent {
 
 @Component({
   selector: 'feed-entry',
-  templateUrl: './feed-entry.component.html'
+  templateUrl: 'feed-entry.component.html'
 })
 export class FeedEntryComponent implements OnInit {
   @Input() entry;
