@@ -2,13 +2,7 @@ import { Component, Input } from  '@angular/core';
 
 @Component({
   selector: 'comment',
-  template: `
-    <div class="comment-box">
-      <b>{{content | emojify}}</b>
-      <br />
-      Submitted <!-- issue {{createdAt | amTimeAgo}} --> by <a [href]="userUrl">{{username}}</a>
-    </div>
-  `
+  templateUrl: './comment.component.html'
 })
 export class CommentComponent {
   @Input() username: string;
