@@ -1,5 +1,5 @@
-import ApolloClient, { createNetworkInterface, addTypename } from 'apollo-client';
-import { Client } from 'subscriptions-transport-ws';
+import ApolloClient, {createNetworkInterface, addTypename} from 'apollo-client';
+import {Client} from 'subscriptions-transport-ws';
 
 import addGraphQLSubscriptions from './subscriptions';
 
@@ -7,8 +7,8 @@ import addGraphQLSubscriptions from './subscriptions';
 import 'whatwg-fetch';
 
 interface Result {
-  id?: string;
-  __typename?: string;
+  id?:string;
+  __typename?:string;
 }
 
 const wsClient = new Client('ws://localhost:8080');
@@ -29,7 +29,7 @@ const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
 export const client = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
   queryTransformer: addTypename,
-  dataIdFromObject: (result: Result) => {
+  dataIdFromObject: (result:Result) => {
     if (result.id && result.__typename) {
       return result.__typename + result.id;
     }

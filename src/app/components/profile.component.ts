@@ -1,6 +1,6 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Angular2Apollo } from 'angular2-apollo';
-import { Subscription } from 'rxjs/Subscription';
+import {Component, OnInit, OnDestroy} from '@angular/core';
+import {Angular2Apollo} from 'angular2-apollo';
+import {Subscription} from 'rxjs/Subscription';
 
 import gql from 'graphql-tag';
 
@@ -18,13 +18,12 @@ const CurrentUserQuery = gql`
   templateUrl: 'profile.component.html'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  loading: boolean = true;
-  currentUser: any;
-  currentUserSub: Subscription;
+  loading:boolean = true;
+  currentUser:any;
+  currentUserSub:Subscription;
 
-  constructor(
-    private apollo: Angular2Apollo
-  ) {}
+  constructor(private apollo:Angular2Apollo) {
+  }
 
   ngOnInit() {
     this.currentUserSub = this.apollo.watchQuery({
