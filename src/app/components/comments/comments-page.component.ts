@@ -3,70 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Angular2Apollo, ApolloQueryObservable} from 'angular2-apollo';
 import {Subscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
-
-import gql from 'graphql-tag';
-
-export const commentQuery = gql`
-  query Comment($repoName: String!) {
-    # Eventually move this into a no fetch query right on the entry
-    # since we literally just need this info to determine whether to
-    # show upvote/downvote buttons
-    currentUser {
-      login
-      html_url
-    }
-    entry(repoFullName: $repoName) {
-      id
-      postedBy {
-        login
-        html_url
-      }
-      createdAt
-      comments {
-        id
-        postedBy {
-          login
-          html_url
-        }
-        createdAt
-        content
-      }
-      repository {
-        full_name
-        html_url
-        description
-        open_issues_count
-        stargazers_count
-      }
-    }
-  }
-`;
-const subscriptionQuery = gql`
-  subscription onCommentAdded($repoFullName: String!){
-    commentAdded(repoFullName: $repoFullName){
-      id
-      postedBy {
-        login
-        html_url
-      }
-      createdAt
-      content
-    }
-  }
-`;
-const submitCommentMutation = gql`
-  mutation submitComment($repoFullName: String!, $commentContent: String!) {
-    submitComment(repoFullName: $repoFullName, commentContent: $commentContent) {
-      id
-      postedBy {
-        login
-        html_url
-      }
-      createdAt
-      content
-    }
-  }
-`;
+import {commentQuery, submitCommentMutation, subscriptionQuery} from './comments-page.model';
 
 // helper function checks for duplicate comments, which we receive because we
 // get subscription updates for our own comments as well.
