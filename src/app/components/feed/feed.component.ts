@@ -1,62 +1,11 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {Angular2Apollo, ApolloQueryObservable} from 'angular2-apollo';
-import {createFragment} from 'apollo-client';
 import {Subscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
 
 import {OnVoteEvent} from './feed-entry.component';
-
-import gql from 'graphql-tag';
-
-const voteInfoFragment = createFragment(gql`
-  fragment voteInfo on Entry {
-    score
-    vote {
-      vote_value
-    }
-  }
-`);
-
-const feedQuery = gql`
-  query Feed($type: FeedType!, $offset: Int, $limit: Int) {
-    currentUser {
-      login
-    }
-    feed(type: $type, offset: $offset, limit: $limit) {
-      createdAt
-      commentCount
-      id
-      postedBy {
-        login
-        html_url
-      }
-      ...voteInfo
-      repository {
-        name
-        full_name
-        description
-        html_url
-        stargazers_count
-        open_issues_count
-        owner {
-          avatar_url
-        }
-      }
-    }
-  }
-`;
-const voteMutation = gql`
-  mutation vote($repoFullName: String!, $type: VoteType!) {
-    vote(repoFullName: $repoFullName, type: $type) {
-      score
-      id
-      vote {
-        vote_value
-      }
-    }
-  }
-`;
+import {feedQuery, voteInfoFragment, voteMutation} from './feed.model';
 
 @Component({
   selector: 'feed',

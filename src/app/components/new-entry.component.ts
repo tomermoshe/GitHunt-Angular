@@ -1,8 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {Angular2Apollo} from 'angular2-apollo';
-
-import gql from 'graphql-tag';
+import {submitRepositoryMutation} from './new-entry.model';
 
 @Component({
   selector: 'new-entry',
@@ -16,7 +15,7 @@ export class NewEntryComponent {
               private apollo:Angular2Apollo) {
   }
 
-  _submitForm(): void {
+  _submitForm():void {
     if (!this.repoFullName) {
       return;
     }
@@ -24,13 +23,7 @@ export class NewEntryComponent {
     this.error = null;
 
     this.apollo.mutate({
-      mutation: gql`
-        mutation submitRepository($repoFullName: String!) {
-          submitRepository(repoFullName: $repoFullName) {
-            createdAt
-          }
-        }
-      `,
+      mutation: submitRepositoryMutation,
       variables: {
         repoFullName: this.repoFullName,
       },

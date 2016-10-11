@@ -1,7 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Angular2Apollo} from 'angular2-apollo';
 
-import {commentQuery} from '../comments/comments-page.component';
+import {commentQuery} from '../comments/comments-page.model';
 
 @Component({
   selector: 'repo-info',
