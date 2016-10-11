@@ -78,7 +78,7 @@ function isDuplicateComment(newComment, existingComments) {
 
 @Component({
   selector: 'comments-page',
-  templateUrl: './comments-page.component.html'
+  templateUrl: 'comments-page.component.html'
 })
 export class CommentsPageComponent implements OnInit, OnDestroy {
   newComment: string;

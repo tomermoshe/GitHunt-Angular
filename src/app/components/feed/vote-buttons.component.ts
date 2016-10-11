@@ -2,7 +2,7 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'vote-buttons',
-  templateUrl: './vote-buttons.component.html'
+  templateUrl: 'vote-buttons.component.html'
 })
 export class VoteButtonsComponent {
   @Input() canVote: boolean;

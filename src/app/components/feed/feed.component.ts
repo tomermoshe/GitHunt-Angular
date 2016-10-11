@@ -60,7 +60,7 @@ const voteMutation = gql`
 
 @Component({
   selector: 'feed',
-  templateUrl: './feed.component.html'
+  templateUrl: 'feed.component.html'
 })
 export class FeedComponent implements OnInit, OnDestroy {
   feed: any;

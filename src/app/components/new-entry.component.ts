@@ -6,7 +6,7 @@ import gql from 'graphql-tag';
 
 @Component({
   selector: 'new-entry',
-  templateUrl: './new-entry.component.html'
+  templateUrl: 'new-entry.component.html'
 })
 export class NewEntryComponent {
   error: string;
