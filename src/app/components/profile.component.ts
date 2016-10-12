@@ -8,14 +8,15 @@ import {CurrentUserQuery} from './profile.model';
   templateUrl: 'profile.component.html'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  loading:boolean = true;
-  currentUser:any;
-  currentUserSub:Subscription;
+  public loading: boolean = true;
+  public currentUser: any;
 
-  constructor(private apollo:Angular2Apollo) {
+  private currentUserSub: Subscription;
+
+  constructor(private apollo: Angular2Apollo) {
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.currentUserSub = this.apollo.watchQuery({
       query: CurrentUserQuery,
     }).subscribe(({data, loading}) => {
@@ -24,7 +25,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy() {
     this.currentUserSub.unsubscribe();
   }
 }

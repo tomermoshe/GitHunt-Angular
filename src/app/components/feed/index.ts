@@ -10,7 +10,7 @@ export const FEED_DECLARATIONS = [
   VoteButtonsComponent
 ];
 
-export const FEED_ROUTES:Routes = [
+export const FEED_ROUTES: Routes = [
   {path: '', redirectTo: '/feed/top', pathMatch: 'full'},
   {path: 'feed/:type', component: FeedComponent}
 ];

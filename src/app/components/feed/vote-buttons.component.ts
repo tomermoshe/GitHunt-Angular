@@ -5,20 +5,24 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
   templateUrl: 'vote-buttons.component.html'
 })
 export class VoteButtonsComponent {
-  @Input() canVote:boolean;
-  @Input() score:number;
-  @Input() vote:any;
-  @Output() onVote:EventEmitter<string> = new EventEmitter<string>();
+  @Input()
+  public canVote: boolean;
+  @Input()
+  public score: number;
+  @Input()
+  public vote: any;
+  @Output()
+  public onVote: EventEmitter<string> = new EventEmitter<string>();
 
-  public voteUp():void {
+  public voteUp(): void {
     this.submitVote('UP');
   }
 
-  public voteDown():void {
+  public voteDown(): void {
     this.submitVote('DOWN');
   }
 
-  private submitVote(type:string):void {
+  private submitVote(type: string): void {
     if (this.canVote === true) {
       const voteValue = {
         UP: 1,

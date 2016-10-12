@@ -8,6 +8,6 @@ export const COMMENTS_DECLARATIONS = [
   CommentsPageComponent
 ];
 
-export const COMMENTS_ROUTES:Routes = [
+export const COMMENTS_ROUTES: Routes = [
   {path: ':org/:repoName', component: CommentsPageComponent}
 ];
