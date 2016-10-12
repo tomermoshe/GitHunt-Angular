@@ -1,25 +1,11 @@
 <loading *ngIf="loading"></loading>
 <div *ngIf="!loading">
+  <feed-entry
+    *ngFor="let entry of feed"
+    [entry]="entry"
+    [currentUser]="currentUser"
+    (onVote)="onVote($event)">
+  </feed-entry>
 
-  <div class="form-group">
-    <input
-      type="text"
-      class="form-control"
-      id="searchInput"
-      placeholder="Search..."
-      name="searchInput"
-      required
-    />
-  </div>
-
-  <div>
-    <feed-entry
-      *ngFor="let entry of feed"
-      [entry]="entry"
-      [currentUser]="currentUser"
-      (onVote)="onVote($event)">
-    </feed-entry>
-
-    <a (click)="fetchMore()">Load more</a>
-  </div>
+  <a (click)="fetchMore()">Load more</a>
 </div>
