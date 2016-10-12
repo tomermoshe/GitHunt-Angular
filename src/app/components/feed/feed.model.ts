@@ -11,11 +11,11 @@ export const voteInfoFragment = createFragment(gql`
 `);
 
 export const feedQuery = gql`
-  query Feed($type: FeedType!, $offset: Int, $limit: Int) {
+  query Feed($type: FeedType!, $offset: Int, $limit: Int, $repoName:String) {
     currentUser {
       login
     }
-    feed(type: $type, offset: $offset, limit: $limit) {
+    feed(type: $type, offset: $offset, limit: $limit, repoName: $repoName) {
       createdAt
       commentCount
       id

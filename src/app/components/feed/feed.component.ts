@@ -35,6 +35,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         type: this.type,
         offset: this.offset,
         limit: this.itemsPerPage,
+        repoName: null
       },
       fragments: voteInfoFragment,
       forceFetch: true,
@@ -74,7 +75,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         return Object.assign({}, prev, {
           feed: [...prev.feed, ...fetchMoreResult.data.feed],
         });
-      },
+      }
     });
     this.offset += this.itemsPerPage;
   }
@@ -85,6 +86,17 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   public search(term:string):void {
-    console.log('searching for:', term);
+    this.feedObs.fetchMore({
+      variables: {
+        repoName: term,
+        offset: 0,
+        limit: this.offset + this.itemsPerPage
+      },
+      updateQuery: (prev, {fetchMoreResult}) => {
+        return Object.assign({}, prev, {
+          feed: fetchMoreResult.data.feed,
+        });
+      }
+    });
   }
 }
