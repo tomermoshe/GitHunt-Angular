@@ -6,6 +6,6 @@ import {Router} from '@angular/router';
   templateUrl: 'navigation.component.html'
 })
 export class NavigationComponent {
-  constructor(public router:Router) {
+  constructor(public router: Router) {
   }
 }

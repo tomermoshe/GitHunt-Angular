@@ -8,29 +8,37 @@ import {commentQuery} from '../comments/comments-page.model';
   templateUrl: 'repo-info.component.html'
 })
 export class RepoInfoComponent implements OnInit {
-  @Input() fullName:string;
-  @Input() description:string;
-  @Input() stargazersCount:number;
-  @Input() openIssuesCount:number;
-  @Input() createdAt:number;
-  @Input() userUrl:string;
-  @Input() username:string;
-  @Input() commentCount:number;
+  @Input()
+  public fullName: string;
+  @Input()
+  public description: string;
+  @Input()
+  public stargazersCount: number;
+  @Input()
+  public openIssuesCount: number;
+  @Input()
+  public createdAt: number;
+  @Input()
+  public userUrl: string;
+  @Input()
+  public username: string;
+  @Input()
+  public commentCount: number;
 
-  org:string;
-  repoName:string;
+  public org: string;
+  public repoName: string;
 
-  constructor(private apollo:Angular2Apollo) {
+  constructor(private apollo: Angular2Apollo) {
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     const parts = this.fullName.split('/');
 
     this.org = parts[0];
     this.repoName = parts[1];
   }
 
-  prefetchComments(repoFullName:string) {
+  public prefetchComments(repoFullName: string) {
     console.log('on', repoFullName);
     this.apollo.query({
       query: commentQuery,

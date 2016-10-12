@@ -5,8 +5,12 @@ import {Component, Input} from  '@angular/core';
   templateUrl: 'comment.component.html'
 })
 export class CommentComponent {
-  @Input() username:string;
-  @Input() userUrl:string;
-  @Input() content:string;
-  @Input() createdAt:Date;
+  @Input()
+  public username: string;
+  @Input()
+  public userUrl: string;
+  @Input()
+  public content: string;
+  @Input()
+  public createdAt: Date;
 }

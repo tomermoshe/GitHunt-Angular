@@ -12,21 +12,23 @@ import {feedQuery, voteInfoFragment, voteMutation} from './feed.model';
   templateUrl: 'feed.component.html'
 })
 export class FeedComponent implements OnInit, OnDestroy {
-  feed:any;
-  currentUser:any;
-  loading:boolean = true;
-  type:Subject<string> = new Subject<string>();
-  offset:number = 0;
-  itemsPerPage:number = 10;
-  paramsSub:Subscription;
-  feedSub:Subscription;
-  feedObs:ApolloQueryObservable<any>;
 
-  constructor(private route:ActivatedRoute,
-              private apollo:Angular2Apollo) {
+  public feed: any;
+  public currentUser: any;
+  public loading: boolean = true;
+
+  private type: Subject<string> = new Subject<string>();
+  private offset: number = 0;
+  private itemsPerPage: number = 10;
+  private paramsSub: Subscription;
+  private feedSub: Subscription;
+  private feedObs: ApolloQueryObservable<any>;
+
+  constructor(private route: ActivatedRoute,
+              private apollo: Angular2Apollo) {
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     this.feedObs = this.apollo.watchQuery({
       query: feedQuery,
       variables: {
@@ -50,7 +52,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     });
   }
 
-  onVote(event:OnVoteEvent):void {
+  public onVote(event: OnVoteEvent): void {
     this.apollo.mutate({
       mutation: voteMutation,
       variables: {
@@ -60,10 +62,10 @@ export class FeedComponent implements OnInit, OnDestroy {
     });
   }
 
-  fetchMore() {
+  public fetchMore(): void {
     this.feedObs.fetchMore({
       variables: {
-        offset: this.offset + this.itemsPerPage,
+        offset: this.offset + this.itemsPerPage
       },
       updateQuery: (prev, {fetchMoreResult}) => {
         if (!fetchMoreResult.data) {
@@ -77,7 +79,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.offset += this.itemsPerPage;
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.paramsSub.unsubscribe();
     this.feedSub.unsubscribe();
   }
