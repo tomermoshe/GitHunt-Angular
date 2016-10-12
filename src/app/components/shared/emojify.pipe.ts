@@ -5,7 +5,7 @@ import {emojify} from 'node-emoji';
   name: 'emojify'
 })
 export class EmojifyPipe implements PipeTransform {
-  transform(text) {
+  public transform(text) {
     if (text) {
       return emojify(text);
     }

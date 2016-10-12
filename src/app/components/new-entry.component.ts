@@ -8,14 +8,14 @@ import {submitRepositoryMutation} from './new-entry.model';
   templateUrl: 'new-entry.component.html'
 })
 export class NewEntryComponent {
-  error:string;
-  repoFullName:string;
+  public error: string;
+  public repoFullName: string;
 
-  constructor(private router:Router,
-              private apollo:Angular2Apollo) {
+  constructor(private router: Router,
+              private apollo: Angular2Apollo) {
   }
 
-  _submitForm():void {
+  public submitForm(): void {
     if (!this.repoFullName) {
       return;
     }

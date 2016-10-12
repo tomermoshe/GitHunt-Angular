@@ -9,7 +9,7 @@ import {feedQuery, voteInfoFragment, voteMutation} from './feed.model';
 
 @Component({
   selector: 'feed',
-  templateUrl: './feed.component.html'
+  templateUrl: 'feed.component.html'
 })
 export class FeedComponent implements OnInit, OnDestroy {
 
@@ -24,8 +24,8 @@ export class FeedComponent implements OnInit, OnDestroy {
   private feedSub:Subscription;
   private feedObs:ApolloQueryObservable<any>;
 
-  constructor(private route:ActivatedRoute,
-              private apollo:Angular2Apollo) {
+  constructor(private route: ActivatedRoute,
+              private apollo: Angular2Apollo) {
   }
 
   public ngOnInit():void {
@@ -65,7 +65,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   public fetchMore():void {
     this.feedObs.fetchMore({
       variables: {
-        offset: this.offset + this.itemsPerPage
+        offset: this.offset + this.itemsPerPage,
       },
       updateQuery: (prev, {fetchMoreResult}) => {
         if (!fetchMoreResult.data) {

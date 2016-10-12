@@ -5,6 +5,8 @@ import {Component, Input} from '@angular/core';
   template: `<span class="label label-info">{{label}}: {{value}}</span>`
 })
 export class InfoLabelComponent {
-  @Input() label;
-  @Input() value;
+  @Input()
+  public label;
+  @Input()
+  public value;
 }

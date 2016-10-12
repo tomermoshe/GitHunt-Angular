@@ -18,25 +18,26 @@ function isDuplicateComment(newComment, existingComments) {
   templateUrl: 'comments-page.component.html'
 })
 export class CommentsPageComponent implements OnInit, OnDestroy {
-  newComment:string;
-  noCommentContent:boolean;
-  entry:any;
-  currentUser:any;
-  loading:boolean = true;
-  repoName:Subject<string> = new Subject<string>();
-  paramsSub:Subscription;
-  entryObs:ApolloQueryObservable<any>;
-  entrySub:Subscription;
-  errors:any[];
-  subscriptionRepoName:string;
-  subscriptionSub:Subscription;
+  public newComment: string;
+  public noCommentContent: boolean;
+  public entry: any;
+  public currentUser: any;
+  public loading: boolean = true;
+  public errors: any[];
 
-  constructor(private route:ActivatedRoute,
-              private apollo:Angular2Apollo) {
+  private repoName: Subject<string> = new Subject<string>();
+  private paramsSub: Subscription;
+  private entryObs: ApolloQueryObservable<any>;
+  private entrySub: Subscription;
+  private subscriptionRepoName: string;
+  private subscriptionSub: Subscription;
+
+  constructor(private route: ActivatedRoute,
+              private apollo: Angular2Apollo) {
     this.noCommentContent = false;
   }
 
-  ngOnInit() {
+  public ngOnInit() {
     this.entryObs = this.apollo.watchQuery({
       query: commentQuery,
       variables: {
@@ -65,7 +66,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  submitForm() {
+  public submitForm() {
     this.noCommentContent = false;
 
     const repositoryName = this.entry.repository.full_name;
@@ -114,7 +115,13 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  subscribe(repoName:string) {
+  public ngOnDestroy() {
+    this.paramsSub.unsubscribe();
+    this.entrySub.unsubscribe();
+    this.subscriptionSub.unsubscribe();
+  }
+
+  private subscribe(repoName: string) {
     this.subscriptionRepoName = repoName;
     this.subscriptionSub = this.apollo.subscribe({
       query: subscriptionQuery,
@@ -143,9 +150,4 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
     });
   }
 
-  ngOnDestroy() {
-    this.paramsSub.unsubscribe();
-    this.entrySub.unsubscribe();
-    this.subscriptionSub.unsubscribe();
-  }
 }
