@@ -85,7 +85,7 @@ export class FeedComponent implements OnInit, OnDestroy {
     this.feedSub.unsubscribe();
   }
 
-  public search(term:string):void {
+  public search(term: string): void {
     this.feedObs.fetchMore({
       variables: {
         repoName: term,
