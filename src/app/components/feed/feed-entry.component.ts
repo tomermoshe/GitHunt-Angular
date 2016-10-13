@@ -1,4 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {Entry, User} from '../../../schema-types';
 
 export interface OnVoteEvent {
   repoFullName: string;
@@ -11,9 +12,11 @@ export interface OnVoteEvent {
 })
 export class FeedEntryComponent {
   @Input()
-  public entry;
+  public entry: Entry;
+
   @Input()
-  public currentUser;
+  public currentUser: User;
+
   @Output()
   public onVote: EventEmitter<OnVoteEvent> = new EventEmitter<OnVoteEvent>();
 

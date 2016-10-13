@@ -10,18 +10,25 @@ import {commentQuery} from '../comments/comments-page.model';
 export class RepoInfoComponent implements OnInit {
   @Input()
   public fullName: string;
+
   @Input()
   public description: string;
+
   @Input()
   public stargazersCount: number;
+
   @Input()
   public openIssuesCount: number;
+
   @Input()
   public createdAt: number;
+
   @Input()
   public userUrl: string;
+
   @Input()
   public username: string;
+
   @Input()
   public commentCount: number;
 
@@ -31,14 +38,14 @@ export class RepoInfoComponent implements OnInit {
   constructor(private apollo: Angular2Apollo) {
   }
 
-  public ngOnInit() {
-    const parts = this.fullName.split('/');
+  public ngOnInit(): void {
+    const parts: string[] = this.fullName.split('/');
 
     this.org = parts[0];
     this.repoName = parts[1];
   }
 
-  public prefetchComments(repoFullName: string) {
+  public prefetchComments(repoFullName: string): void {
     console.log('on', repoFullName);
     this.apollo.query({
       query: commentQuery,

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const CurrentUserQuery = gql`
+export const CurrentUserQuery: any = gql`
   query CurrentUserForProfile {
     currentUser {
       login

@@ -17,7 +17,6 @@ import {client} from './client';
 
 @NgModule({
   declarations: [
-    AppComponent,
     NavigationComponent,
     ProfileComponent,
     NewEntryComponent,
@@ -36,7 +35,7 @@ import {client} from './client';
     RouterModule.forRoot(routes),
     ApolloModule.withClient(client)
   ],
-  bootstrap: [AppComponent],
+  bootstrap: [AppComponent]
 })
 export class AppModule {
 }

@@ -1,3 +1,4 @@
+import {HTTPNetworkInterface} from 'apollo-client/networkInterface';
 import ApolloClient, {createNetworkInterface, addTypename} from 'apollo-client';
 import {Client} from 'subscriptions-transport-ws';
 
@@ -13,7 +14,7 @@ interface Result {
 
 const wsClient: Client = new Client('ws://localhost:8080');
 
-const networkInterface = createNetworkInterface({
+const networkInterface: HTTPNetworkInterface = createNetworkInterface({
   uri: '/graphql',
   opts: {
     credentials: 'same-origin',
@@ -21,12 +22,12 @@ const networkInterface = createNetworkInterface({
   transportBatching: true,
 });
 
-const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
+const networkInterfaceWithSubscriptions: HTTPNetworkInterface & Client = addGraphQLSubscriptions(
   networkInterface,
   wsClient,
 );
 
-export const client = new ApolloClient({
+export const client: ApolloClient = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
   queryTransformer: addTypename,
   dataIdFromObject: (result: Result) => {
