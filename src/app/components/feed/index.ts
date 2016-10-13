@@ -4,7 +4,7 @@ import {FeedComponent} from './feed.component';
 import {FeedEntryComponent} from './feed-entry.component';
 import {VoteButtonsComponent} from './vote-buttons.component';
 
-export const FEED_DECLARATIONS = [
+export const FEED_DECLARATIONS: any[] = [
   FeedComponent,
   FeedEntryComponent,
   VoteButtonsComponent

@@ -1,6 +1,6 @@
 import gql from 'graphql-tag';
 
-export const commentQuery = gql`
+export const commentQuery: any = gql`
   query Comment($repoName: String!) {
     # Eventually move this into a no fetch query right on the entry
     # since we literally just need this info to determine whether to
@@ -36,7 +36,7 @@ export const commentQuery = gql`
   }
 `;
 
-export const subscriptionQuery = gql`
+export const subscriptionQuery: any = gql`
   subscription onCommentAdded($repoFullName: String!){
     commentAdded(repoFullName: $repoFullName){
       id
@@ -50,7 +50,7 @@ export const subscriptionQuery = gql`
   }
 `;
 
-export const submitCommentMutation = gql`
+export const submitCommentMutation: any = gql`
   mutation submitComment($repoFullName: String!, $commentContent: String!) {
     submitComment(repoFullName: $repoFullName, commentContent: $commentContent) {
       id

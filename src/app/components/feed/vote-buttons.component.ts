@@ -1,4 +1,5 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
+import {VoteType} from '../../../schema-types';
 
 @Component({
   selector: 'vote-buttons',
@@ -7,10 +8,13 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 export class VoteButtonsComponent {
   @Input()
   public canVote: boolean;
+
   @Input()
   public score: number;
+
   @Input()
   public vote: any;
+
   @Output()
   public onVote: EventEmitter<string> = new EventEmitter<string>();
 
@@ -24,7 +28,7 @@ export class VoteButtonsComponent {
 
   private submitVote(type: string): void {
     if (this.canVote === true) {
-      const voteValue = {
+      const voteValue: VoteType = {
         UP: 1,
         DOWN: -1,
       }[type];

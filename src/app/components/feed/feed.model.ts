@@ -1,7 +1,7 @@
 import {createFragment} from 'apollo-client';
 import gql from 'graphql-tag';
 
-export const voteInfoFragment = createFragment(gql`
+export const voteInfoFragment: any = createFragment(gql`
   fragment voteInfo on Entry {
     score
     vote {
@@ -10,7 +10,7 @@ export const voteInfoFragment = createFragment(gql`
   }
 `);
 
-export const feedQuery = gql`
+export const feedQuery: any = gql`
   query Feed($type: FeedType!, $offset: Int, $limit: Int, $repoName:String) {
     currentUser {
       login
@@ -39,7 +39,7 @@ export const feedQuery = gql`
   }
 `;
 
-export const voteMutation = gql`
+export const voteMutation: any = gql`
   mutation vote($repoFullName: String!, $type: VoteType!) {
     vote(repoFullName: $repoFullName, type: $type) {
       score

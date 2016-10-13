@@ -16,7 +16,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   constructor(private apollo: Angular2Apollo) {
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.currentUserSub = this.apollo.watchQuery({
       query: CurrentUserQuery,
     }).subscribe(({data, loading}) => {
@@ -25,7 +25,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
     });
   }
 
-  public ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.currentUserSub.unsubscribe();
   }
 }

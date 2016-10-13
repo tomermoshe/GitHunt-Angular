@@ -6,7 +6,8 @@ import {Component, Input} from '@angular/core';
 })
 export class InfoLabelComponent {
   @Input()
-  public label;
+  public label: string;
+
   @Input()
-  public value;
+  public value: string;
 }
