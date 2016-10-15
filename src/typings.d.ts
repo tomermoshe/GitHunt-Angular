@@ -3,7 +3,3 @@
 // https://www.typescriptlang.org/docs/handbook/writing-declaration-files.html
 
 /// <reference types="typed-graphql" />
-
-declare module 'node-emoji' {
-  export function emojify(input: string): string;
-}

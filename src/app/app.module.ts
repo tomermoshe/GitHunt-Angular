@@ -4,6 +4,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ApolloModule } from 'angular2-apollo';
 import { TimeAgoPipe } from 'angular2-moment';
+import { EmojifyModule } from 'angular2-emojify';
 
 import { AppComponent } from './app.component';
 import { NavigationComponent } from './navigation.component';
@@ -34,7 +35,8 @@ import { client } from './client';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
-    ApolloModule.withClient(client)
+    ApolloModule.withClient(client),
+    EmojifyModule
   ],
   bootstrap: [ AppComponent ],
 })
