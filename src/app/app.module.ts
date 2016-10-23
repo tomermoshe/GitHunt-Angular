@@ -17,6 +17,7 @@ import {client} from './client';
 
 @NgModule({
   declarations: [
+    AppComponent,
     NavigationComponent,
     ProfileComponent,
     NewEntryComponent,
