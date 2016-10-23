@@ -1,11 +1,12 @@
+
 import { NgModule } from '@angular/core';
 import { BrowserModule  } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ApolloModule } from 'angular2-apollo';
 import { TimeAgoPipe } from 'angular2-moment';
-import { EmojifyModule } from 'angular2-emojify';
 
+import { EmojifyModule } from 'angular2-emojify';
 import { AppComponent } from './components/app.component';
 import { NavigationComponent } from './components/navigation.component';
 import { ProfileComponent } from './components/profile.component';
