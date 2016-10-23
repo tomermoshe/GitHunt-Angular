@@ -5,7 +5,7 @@
         (click)="voteUp()">
         <span class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
       </button>
-      <div class="vote-score">{{ score }} {{currentUser}}</div>
+      <div class="vote-score">{{ score }}</div>
       <button
         class="btn btn-score"
         [ngClass]="{active: vote.vote_value === -1, invisible: !canVote}"
