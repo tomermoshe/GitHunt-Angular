@@ -1,4 +1,5 @@
 import {createFragment} from 'apollo-client';
+
 import gql from 'graphql-tag';
 
 export const voteInfoFragment: any = createFragment(gql`
@@ -11,11 +12,11 @@ export const voteInfoFragment: any = createFragment(gql`
 `);
 
 export const feedQuery: any = gql`
-  query Feed($type: FeedType!, $offset: Int, $limit: Int, $repoName:String) {
+  query Feed($type: FeedType!, $offset: Int, $limit: Int) {
     currentUser {
       login
     }
-    feed(type: $type, offset: $offset, limit: $limit, repoName: $repoName) {
+    feed(type: $type, offset: $offset, limit: $limit) {
       createdAt
       commentCount
       id

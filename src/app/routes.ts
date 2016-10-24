@@ -1,8 +1,8 @@
 import {Routes} from '@angular/router';
 
-import {FEED_ROUTES} from './components/feed';
-import {COMMENTS_ROUTES} from './components/comments';
-import {NewEntryComponent} from './components/new-entry.component';
+import {FEED_ROUTES} from './feed';
+import {COMMENTS_ROUTES} from './comments';
+import {NewEntryComponent} from './new-entry/new-entry.component';
 
 export const routes: Routes = [
   ...FEED_ROUTES,

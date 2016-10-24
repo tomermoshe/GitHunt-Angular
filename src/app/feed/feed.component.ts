@@ -34,8 +34,7 @@ export class FeedComponent implements OnInit, OnDestroy {
       variables: {
         type: this.type,
         offset: this.offset,
-        limit: this.itemsPerPage,
-        repoName: null
+        limit: this.itemsPerPage
       },
       fragments: voteInfoFragment,
       forceFetch: true,
@@ -83,20 +82,5 @@ export class FeedComponent implements OnInit, OnDestroy {
   public ngOnDestroy(): void {
     this.paramsSub.unsubscribe();
     this.feedSub.unsubscribe();
-  }
-
-  public search(term: string): void {
-    this.feedObs.fetchMore({
-      variables: {
-        repoName: term,
-        offset: 0,
-        limit: this.offset + this.itemsPerPage
-      },
-      updateQuery: (prev, {fetchMoreResult}) => {
-        return Object.assign({}, prev, {
-          feed: fetchMoreResult.data.feed,
-        });
-      }
-    });
   }
 }

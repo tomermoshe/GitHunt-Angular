@@ -46,10 +46,9 @@ export class RepoInfoComponent implements OnInit {
   }
 
   public prefetchComments(repoFullName: string): void {
-    console.log('on', repoFullName);
     this.apollo.query({
       query: commentQuery,
-      variables: {repoName: repoFullName},
+      variables: { repoFullName },
     });
   }
 }

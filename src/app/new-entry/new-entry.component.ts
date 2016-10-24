@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {Angular2Apollo} from 'angular2-apollo';
+
 import {submitRepositoryMutation} from './new-entry.model';
 
 @Component({

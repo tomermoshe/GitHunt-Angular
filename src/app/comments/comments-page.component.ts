@@ -4,7 +4,7 @@ import {Angular2Apollo, ApolloQueryObservable} from 'angular2-apollo';
 import {Subscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
 import {commentQuery, submitCommentMutation, subscriptionQuery} from './comments-page.model';
-import {Comment} from '../../../schema-types';
+import {Comment} from '../../schema-types';
 
 // helper function checks for duplicate comments, which we receive because we
 // get subscription updates for our own comments as well.
@@ -42,7 +42,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
     this.entryObs = this.apollo.watchQuery({
       query: commentQuery,
       variables: {
-        repoName: this.repoName,
+        repoFullName: this.repoName,
       },
     });
 

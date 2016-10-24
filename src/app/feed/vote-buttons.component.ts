@@ -1,5 +1,6 @@
 import {Component, Input, Output, EventEmitter} from '@angular/core';
-import {VoteType} from '../../../schema-types';
+
+import {VoteType} from '../../schema-types';
 
 @Component({
   selector: 'vote-buttons',

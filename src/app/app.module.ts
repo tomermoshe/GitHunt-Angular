@@ -7,13 +7,13 @@ import { ApolloModule } from 'angular2-apollo';
 import { TimeAgoPipe } from 'angular2-moment';
 
 import { EmojifyModule } from 'angular2-emojify';
-import { AppComponent } from './components/app.component';
-import { NavigationComponent } from './components/navigation.component';
-import { ProfileComponent } from './components/profile.component';
-import { NewEntryComponent } from './components/new-entry.component';
-import { FEED_DECLARATIONS } from './components/feed';
-import { COMMENTS_DECLARATIONS } from './components/comments';
-import { SHARED_DECLARATIONS } from './components/shared';
+import { AppComponent } from './app.component';
+import { NavigationComponent } from './navigation/navigation.component';
+import { ProfileComponent } from './profile/profile.component';
+import { NewEntryComponent } from './new-entry/new-entry.component';
+import { FEED_DECLARATIONS } from './feed';
+import { COMMENTS_DECLARATIONS } from './comments';
+import { SHARED_DECLARATIONS } from './shared';
 import { routes } from './routes';
 import { client } from './client';
 

@@ -1,7 +1,7 @@
 import gql from 'graphql-tag';
 
 export const commentQuery: any = gql`
-  query Comment($repoName: String!) {
+  query Comment($repoFullName: String!) {
     # Eventually move this into a no fetch query right on the entry
     # since we literally just need this info to determine whether to
     # show upvote/downvote buttons
@@ -9,7 +9,7 @@ export const commentQuery: any = gql`
       login
       html_url
     }
-    entry(repoFullName: $repoName) {
+    entry(repoFullName: $repoFullName) {
       id
       postedBy {
         login

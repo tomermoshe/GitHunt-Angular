@@ -1,18 +1,6 @@
 <loading *ngIf="loading"></loading>
 <div *ngIf="!loading">
-
-  <div class="form-group">
-    <input
-      #term
-      type="text"
-      class="form-control"
-      placeholder="Search..."
-      name="searchInput"
-      (keyup)="search(term.value)">
-  </div>
-
-  <div>
-    <feed-entry
+  <feed-entry
       *ngFor="let entry of feed"
       [entry]="entry"
       [currentUser]="currentUser"
@@ -20,5 +8,4 @@
     </feed-entry>
 
     <a (click)="fetchMore()">Load more</a>
-  </div>
 </div>
