@@ -1,12 +1,13 @@
-import { Component, Input } from '@angular/core';
+import {Component, Input} from '@angular/core';
 
 @Component({
   selector: 'info-label',
-  template: `
-    <span class="label label-info">{{label}}: {{value}}</span>
-  `
+  template: `<span class="label label-info">{{label}}: {{value}}</span>`
 })
 export class InfoLabelComponent {
-  @Input() label;
-  @Input() value;
+  @Input()
+  public label: string;
+
+  @Input()
+  public value: string;
 }

@@ -1,62 +1,54 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Angular2Apollo } from 'angular2-apollo';
+import {Component, OnInit, Input} from '@angular/core';
+import {Angular2Apollo} from 'angular2-apollo';
 
-import { commentQuery } from '../comments/comments-page.component';
+import {commentQuery} from '../comments/comments-page.model';
 
 @Component({
   selector: 'repo-info',
-  template: `
-    <p> {{ description | emojify }}</p>
-    <p>
-      <info-label
-        label="Stars"
-        [value]="stargazersCount">
-      </info-label>
-      &nbsp;
-      <info-label
-        label="Issues"
-        [value]="openIssuesCount">
-      </info-label>
-      <span *ngIf="commentCount || commentCount === 0">
-        &nbsp;
-        <a [routerLink]="['/', org, repoName]" (mouseover)="prefetchComments(fullName)">
-        View comments ({{ commentCount }})
-        </a>
-      </span>
-      &nbsp;&nbsp;&nbsp;
-      Submitted <!--{{ createdAt | amTimeAgo }}-->
-      &nbsp;by&nbsp;
-      <a [href]="userUrl">{{ username }}</a>
-    </p>
-  `
+  templateUrl: 'repo-info.component.html'
 })
 export class RepoInfoComponent implements OnInit {
-  @Input() fullName: string;
-  @Input() description: string;
-  @Input() stargazersCount: number;
-  @Input() openIssuesCount: number;
-  @Input() createdAt: number;
-  @Input() userUrl: string;
-  @Input() username: string;
-  @Input() commentCount: number;
+  @Input()
+  public fullName: string;
 
-  org: string;
-  repoName: string;
+  @Input()
+  public description: string;
 
-  constructor(private apollo: Angular2Apollo) {}
+  @Input()
+  public stargazersCount: number;
 
-  ngOnInit() {
-    const parts = this.fullName.split('/');
+  @Input()
+  public openIssuesCount: number;
+
+  @Input()
+  public createdAt: number;
+
+  @Input()
+  public userUrl: string;
+
+  @Input()
+  public username: string;
+
+  @Input()
+  public commentCount: number;
+
+  public org: string;
+  public repoName: string;
+
+  constructor(private apollo: Angular2Apollo) {
+  }
+
+  public ngOnInit(): void {
+    const parts: string[] = this.fullName.split('/');
 
     this.org = parts[0];
     this.repoName = parts[1];
   }
 
-  prefetchComments(repoFullName: string) {
-    console.log('on', repoFullName);
+  public prefetchComments(repoFullName: string): void {
     this.apollo.query({
       query: commentQuery,
-      variables: { repoName: repoFullName },
+      variables: { repoFullName },
     });
   }
 }

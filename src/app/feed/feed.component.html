@@ -1,0 +1,11 @@
+<loading *ngIf="loading"></loading>
+<div *ngIf="!loading">
+  <feed-entry
+      *ngFor="let entry of feed"
+      [entry]="entry"
+      [currentUser]="currentUser"
+      (onVote)="onVote($event)">
+    </feed-entry>
+
+    <a (click)="fetchMore()">Load more</a>
+</div>

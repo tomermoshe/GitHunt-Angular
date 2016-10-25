@@ -3,6 +3,7 @@
   vertical-align: top;
   padding-right: 10px;
 }
+
 .media-vote .btn-score {
   border: none;
   background-color: transparent;
@@ -11,17 +12,21 @@
   line-height: 0;
   color: rgba(91, 192, 222, 0.52);
 }
+
 .media-vote .btn-score:hover, .media-vote .btn-score.active {
   color: #5bc0de;
   box-shadow: none;
 }
+
 .media-vote .btn-score:active {
   color: #5BA2DE;
   box-shadow: none;
 }
+
 .media-vote .btn-score:focus {
   outline: none;
 }
+
 .media-vote .vote-score {
   text-align: center;
   font-size: 1.2em;
@@ -36,7 +41,7 @@ body {
 }
 
 .comment-box {
-  border-top:1px solid black;
+  border-top: 1px solid black;
   padding: 5px;
 }
 
