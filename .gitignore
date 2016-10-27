@@ -12,6 +12,7 @@ dev.sqlite3
 
 # IDEs and editors
 /.idea
+/.vscode
 .project
 .classpath
 *.launch
