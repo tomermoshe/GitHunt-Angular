@@ -1,9 +1,8 @@
 import {print} from 'graphql-tag/printer';
 import {Client} from 'subscriptions-transport-ws';
-import {HTTPNetworkInterface} from 'apollo-client/networkInterface';
 
 // quick way to add the subscribe and unsubscribe functions to the network interface
-export default function addGraphQLSubscriptions(networkInterface: any, wsClient: Client): HTTPNetworkInterface & Client {
+export default function addGraphQLSubscriptions(networkInterface: any, wsClient: Client): any {
   return Object.assign(networkInterface, {
     subscribe(request: any, handler: any): number {
       return wsClient.subscribe({

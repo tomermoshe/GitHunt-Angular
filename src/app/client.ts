@@ -1,5 +1,4 @@
-import {HTTPNetworkInterface} from 'apollo-client/networkInterface';
-import ApolloClient, {createNetworkInterface, addTypename} from 'apollo-client';
+import ApolloClient, {createBatchingNetworkInterface} from 'apollo-client';
 import {Client} from 'subscriptions-transport-ws';
 
 import addGraphQLSubscriptions from './subscriptions';
@@ -14,27 +13,25 @@ interface Result {
 
 const wsClient: Client = new Client('ws://localhost:8080');
 
-const networkInterface: HTTPNetworkInterface = createNetworkInterface({
+const networkInterface: any = createBatchingNetworkInterface({
   uri: '/graphql',
+  batchInterval: 10,
   opts: {
     credentials: 'same-origin',
-  },
-  transportBatching: true,
+  }
 });
 
-const networkInterfaceWithSubscriptions: HTTPNetworkInterface & Client = addGraphQLSubscriptions(
+const networkInterfaceWithSubscriptions: any = addGraphQLSubscriptions(
   networkInterface,
   wsClient,
 );
 
 export const client: ApolloClient = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
-  queryTransformer: addTypename,
   dataIdFromObject: (result: Result) => {
     if (result.id && result.__typename) {
       return result.__typename + result.id;
     }
     return null;
-  },
-  shouldBatch: true,
+  }
 });
