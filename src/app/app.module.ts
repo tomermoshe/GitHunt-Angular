@@ -4,7 +4,6 @@ import { BrowserModule  } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { ApolloModule } from 'angular2-apollo';
-import { TimeAgoPipe } from 'angular2-moment';
 
 import { EmojifyModule } from 'angular2-emojify';
 import { AppComponent } from './app.component';
@@ -25,8 +24,7 @@ import { client } from './client';
     NewEntryComponent,
     ...FEED_DECLARATIONS,
     ...COMMENTS_DECLARATIONS,
-    ...SHARED_DECLARATIONS,
-    TimeAgoPipe
+    ...SHARED_DECLARATIONS
   ],
   entryComponents: [
     AppComponent

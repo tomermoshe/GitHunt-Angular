@@ -9,6 +9,7 @@
     "outDir": "../dist/out-tsc",
     "sourceMap": true,
     "target": "es5",
+    "lib": ["es5", "dom"],
     "typeRoots": [
       "../node_modules/@types"
     ]
