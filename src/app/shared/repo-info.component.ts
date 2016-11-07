@@ -34,6 +34,7 @@ export class RepoInfoComponent implements OnInit {
 
   public org: string;
   public repoName: string;
+  private prefetched: boolean = false;
 
   constructor(private apollo: Angular2Apollo) {}
 
@@ -45,10 +46,14 @@ export class RepoInfoComponent implements OnInit {
   }
 
   public prefetchComments(repoFullName: string): void {
-    this.apollo.query({
-      query: commentQuery,
-      variables: { repoFullName },
-      fragments: fragments['comment'].fragments(),
-    });
+    if (!this.prefetched) {
+      this.apollo.query({
+        query: commentQuery,
+        variables: { repoFullName },
+        fragments: fragments['comment'].fragments(),
+      });
+
+      this.prefetched = true;
+    }
   }
 }
