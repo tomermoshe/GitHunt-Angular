@@ -1,46 +1,19 @@
-import {createFragment} from 'apollo-client';
+import { Document } from 'graphql';
 
 import gql from 'graphql-tag';
 
-export const voteInfoFragment: any = createFragment(gql`
-  fragment voteInfo on Entry {
-    score
-    vote {
-      vote_value
-    }
-  }
-`);
-
-export const feedQuery: any = gql`
+export const feedQuery: Document = gql`
   query Feed($type: FeedType!, $offset: Int, $limit: Int) {
     currentUser {
       login
     }
     feed(type: $type, offset: $offset, limit: $limit) {
-      createdAt
-      commentCount
-      id
-      postedBy {
-        login
-        html_url
-      }
-      ...voteInfo
-      repository {
-        name
-        full_name
-        description
-        html_url
-        stargazers_count
-        open_issues_count
-        owner {
-          avatar_url
-        }
-      }
+      ...FeedEntry
     }
   }
 `;
 
-export const voteMutation: any = gql`
+export const voteMutation: Document = gql`
   mutation vote($repoFullName: String!, $type: VoteType!) {
     vote(repoFullName: $repoFullName, type: $type) {
       score

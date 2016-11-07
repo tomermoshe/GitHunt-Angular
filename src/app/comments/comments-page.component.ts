@@ -3,7 +3,7 @@ import {ActivatedRoute} from '@angular/router';
 import {Angular2Apollo, ApolloQueryObservable} from 'angular2-apollo';
 import {Subscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
-import {commentQuery, submitCommentMutation, subscriptionQuery} from './comments-page.model';
+import {commentQuery, submitCommentMutation, subscriptionQuery, fragments} from './comments-page.model';
 import {Comment} from '../../schema-types';
 
 // helper function checks for duplicate comments, which we receive because we
@@ -44,6 +44,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
       variables: {
         repoFullName: this.repoName,
       },
+      fragments: fragments['comment'].fragments(),
     });
 
     this.entrySub = this.entryObs.subscribe(({data, loading}) => {
@@ -81,6 +82,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
           repoFullName: repositoryName,
           commentContent: this.newComment,
         },
+        fragments: fragments['comment'].fragments(),
         optimisticResponse: {
           __typename: 'Mutation',
           submitComment: {

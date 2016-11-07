@@ -5,7 +5,8 @@ import {Subscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
 
 import {OnVoteEvent} from './feed-entry.component';
-import {feedQuery, voteInfoFragment, voteMutation} from './feed.model';
+import {feedQuery, voteMutation} from './feed.model';
+import {fragments} from './feed-entry.model';
 
 @Component({
   selector: 'feed',
@@ -20,13 +21,13 @@ export class FeedComponent implements OnInit, OnDestroy {
   private type: Subject<string> = new Subject<string>();
   private offset: number = 0;
   private itemsPerPage: number = 10;
-  private paramsSub: Subscription;
   private feedSub: Subscription;
   private feedObs: ApolloQueryObservable<any>;
 
-  constructor(private route: ActivatedRoute,
-              private apollo: Angular2Apollo) {
-  }
+  constructor(
+    private route: ActivatedRoute,
+    private apollo: Angular2Apollo
+  ) {}
 
   public ngOnInit(): void {
     this.feedObs = this.apollo.watchQuery({
@@ -36,7 +37,7 @@ export class FeedComponent implements OnInit, OnDestroy {
         offset: this.offset,
         limit: this.itemsPerPage
       },
-      fragments: voteInfoFragment,
+      fragments: fragments['entry'].fragments(),
       forceFetch: true,
     });
 
@@ -46,7 +47,7 @@ export class FeedComponent implements OnInit, OnDestroy {
       this.loading = loading;
     });
 
-    this.paramsSub = this.route.params.subscribe((params) => {
+    this.route.params.subscribe((params) => {
       this.loading = true;
       this.type.next((params['type'] || 'top').toUpperCase());
     });
@@ -80,7 +81,6 @@ export class FeedComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.paramsSub.unsubscribe();
     this.feedSub.unsubscribe();
   }
 }

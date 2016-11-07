@@ -1,7 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Angular2Apollo} from 'angular2-apollo';
 
-import {commentQuery} from '../comments/comments-page.model';
+import {commentQuery, fragments} from '../comments/comments-page.model';
 
 @Component({
   selector: 'repo-info',
@@ -35,8 +35,7 @@ export class RepoInfoComponent implements OnInit {
   public org: string;
   public repoName: string;
 
-  constructor(private apollo: Angular2Apollo) {
-  }
+  constructor(private apollo: Angular2Apollo) {}
 
   public ngOnInit(): void {
     const parts: string[] = this.fullName.split('/');
@@ -49,6 +48,7 @@ export class RepoInfoComponent implements OnInit {
     this.apollo.query({
       query: commentQuery,
       variables: { repoFullName },
+      fragments: fragments['comment'].fragments(),
     });
   }
 }

@@ -1,4 +1,21 @@
+import Fragment from 'graphql-fragments';
 import gql from 'graphql-tag';
+
+export const fragments: {
+  [key: string]: Fragment
+} = {
+  comment: new Fragment(gql`
+    fragment CommentsPageComment on Comment {
+      id
+      postedBy {
+        login
+        html_url
+      }
+      createdAt
+      content
+    }
+  `),
+};
 
 export const commentQuery: any = gql`
   query Comment($repoFullName: String!) {
@@ -17,13 +34,7 @@ export const commentQuery: any = gql`
       }
       createdAt
       comments {
-        id
-        postedBy {
-          login
-          html_url
-        }
-        createdAt
-        content
+        ...CommentsPageComment
       }
       repository {
         full_name
@@ -53,13 +64,7 @@ export const subscriptionQuery: any = gql`
 export const submitCommentMutation: any = gql`
   mutation submitComment($repoFullName: String!, $commentContent: String!) {
     submitComment(repoFullName: $repoFullName, commentContent: $commentContent) {
-      id
-      postedBy {
-        login
-        html_url
-      }
-      createdAt
-      content
+      ...CommentsPageComment
     }
   }
 `;
