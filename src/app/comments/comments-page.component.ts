@@ -14,7 +14,7 @@ function isDuplicateComment(newComment: Comment, existingComments: Comment[]): b
   return newComment.id !== null && existingComments.some(comment => newComment.id === comment.id);
 }
 
-const COMMENTS_PER_QUERY: number = 10;
+export const COMMENTS_PER_QUERY: number = 10;
 
 @Component({
   selector: 'comments-page',

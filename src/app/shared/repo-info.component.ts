@@ -2,6 +2,7 @@ import {Component, OnInit, Input} from '@angular/core';
 import {Angular2Apollo} from 'angular2-apollo';
 
 import {commentQuery, fragments} from '../comments/comments-page.model';
+import {COMMENTS_PER_QUERY} from '../comments/comments-page.component';
 
 @Component({
   selector: 'repo-info',
@@ -49,7 +50,11 @@ export class RepoInfoComponent implements OnInit {
     if (!this.prefetched) {
       this.apollo.query({
         query: commentQuery,
-        variables: { repoFullName },
+        variables: {
+          repoFullName,
+          offset: 0,
+          limit: COMMENTS_PER_QUERY,
+        },
         fragments: fragments['comment'].fragments(),
       });
 
