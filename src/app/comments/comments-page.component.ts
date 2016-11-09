@@ -14,6 +14,8 @@ function isDuplicateComment(newComment: Comment, existingComments: Comment[]): b
   return newComment.id !== null && existingComments.some(comment => newComment.id === comment.id);
 }
 
+const COMMENTS_PER_QUERY: number = 10;
+
 @Component({
   selector: 'comments-page',
   templateUrl: 'comments-page.component.html'
@@ -24,6 +26,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   public entry: any;
   public currentUser: any;
   public loading: boolean = true;
+  public loadingMoreComments: boolean = false;
   public errors: any[];
 
   private repoName: Subject<string> = new Subject<string>();
@@ -32,6 +35,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   private entrySub: Subscription;
   private subscriptionRepoName: string;
   private subscriptionSub: Subscription;
+  private offset: number = 0;
 
   constructor(private route: ActivatedRoute,
               private apollo: Angular2Apollo) {
@@ -43,6 +47,8 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
       query: commentQuery,
       variables: {
         repoFullName: this.repoName,
+        limit: COMMENTS_PER_QUERY,
+        offset: this.offset
       },
       fragments: fragments['comment'].fragments(),
     });
@@ -64,8 +70,42 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
         if (this.subscriptionSub) {
           this.subscriptionSub.unsubscribe();
         }
+
         this.subscribe(repoName);
       });
+  }
+
+  public loadMore(): void {
+    if (this.entry.comments && this.entry.comments.length < this.entry.commentCount) {
+      this.loadingMoreComments = true;
+      this.offset += COMMENTS_PER_QUERY;
+
+      this.entryObs.fetchMore({
+        variables: {
+          limit: COMMENTS_PER_QUERY,
+          offset: this.offset
+        },
+        updateQuery: (prev, {fetchMoreResult}) => {
+          let newComments: Comment[] = fetchMoreResult.data.entry.comments;
+          let commentCount: number = fetchMoreResult.data.entry.commentCount;
+
+          if (!fetchMoreResult.data.entry.comments) {
+            return prev;
+          }
+
+          const newEntry: Comment[] = Object.assign({}, prev.entry, {
+            comments: [...prev.entry.comments, ...newComments],
+            commentCount: commentCount
+          });
+
+          this.loadingMoreComments = false;
+
+          return Object.assign({}, prev, {
+            entry: newEntry,
+          });
+        }
+      });
+    }
   }
 
   public submitForm(): void {
@@ -101,8 +141,11 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
               return prev;
             }
 
+            this.offset++;
+
             const newEntry: Comment[] = Object.assign({}, prev.entry, {
               comments: [newComment, ...prev.entry.comments],
+              commentCount: (prev.entry.commentCount || 0) + 1
             });
 
             return Object.assign({}, prev, {
@@ -150,5 +193,4 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
       }
     });
   }
-
 }

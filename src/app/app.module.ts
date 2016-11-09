@@ -15,6 +15,7 @@ import { COMMENTS_DECLARATIONS } from './comments';
 import { SHARED_DECLARATIONS } from './shared';
 import { routes } from './routes';
 import { client } from './client';
+import { InfiniteScrollModule } from 'angular2-infinite-scroll';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { client } from './client';
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
     ApolloModule.withClient(client),
-    EmojifyModule
+    EmojifyModule,
+    InfiniteScrollModule
   ],
   bootstrap: [ AppComponent ],
 })

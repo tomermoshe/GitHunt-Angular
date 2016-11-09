@@ -36,7 +36,10 @@
     <div *ngIf="!currentUser"><em>Log in to comment.</em></div>
   </div>
   <br/>
-  <div *ngIf="entry.comments">
+  <div *ngIf="entry.comments"
+       infinite-scroll
+       [infiniteScrollDistance]="0.2"
+       (scrolled)="loadMore()">
     <comment
       *ngFor="let comment of entry.comments"
       [username]="comment.postedBy.login"
@@ -45,4 +48,5 @@
       [userUrl]="comment.postedBy.html_url">
     </comment>
   </div>
+  <loading *ngIf="loadingMoreComments"></loading>
 </div>

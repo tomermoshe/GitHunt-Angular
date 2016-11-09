@@ -30,9 +30,6 @@ export interface Entry {
   // The score of this repository, upvotes - downvotes
   score: number;
 
-  // Comments posted about this repository
-  comments: [Comment];
-
   // The number of comments posted about this repository
   commentCount: number;
 
@@ -41,6 +38,9 @@ export interface Entry {
 
   // XXX to be changed
   vote: Vote;
+
+  // Comments posted about this repository
+  comments(limit: number, offset: number): [Comment];
 }
 
 // A list of options for the sort order of the feed

@@ -18,7 +18,7 @@ export const fragments: {
 };
 
 export const commentQuery: any = gql`
-  query Comment($repoFullName: String!) {
+  query Comment($repoFullName: String!, $limit: Int, $offset: Int) {
     # Eventually move this into a no fetch query right on the entry
     # since we literally just need this info to determine whether to
     # show upvote/downvote buttons
@@ -33,9 +33,10 @@ export const commentQuery: any = gql`
         html_url
       }
       createdAt
-      comments {
+      comments(limit: $limit, offset: $offset) {
         ...CommentsPageComment
       }
+      commentCount
       repository {
         full_name
         html_url

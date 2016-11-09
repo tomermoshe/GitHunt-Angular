@@ -273,6 +273,10 @@ angular2-emojify@~0.1.0:
     "@angular/core" "^2.0.0"
     node-emoji "^1.4.1"
 
+angular2-infinite-scroll:
+  version "0.2.6"
+  resolved "https://registry.yarnpkg.com/angular2-infinite-scroll/-/angular2-infinite-scroll-0.2.6.tgz#fc4550b035b48d7b124ff6ea3e1fc4ea047aad2a"
+
 angular2-moment@1.0.0-beta.6:
   version "1.0.0-beta.6"
   resolved "https://registry.yarnpkg.com/angular2-moment/-/angular2-moment-1.0.0-beta.6.tgz#0355d57f6169597796581cb9c30495f17cc2d245"
