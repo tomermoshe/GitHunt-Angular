@@ -3,6 +3,9 @@ import {ActivatedRoute} from '@angular/router';
 import {Angular2Apollo, ApolloQueryObservable} from 'angular2-apollo';
 import {Subscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
+
+import 'rxjs/add/operator/toPromise';
+
 import {commentQuery, submitCommentMutation, subscriptionQuery, fragments} from './comments-page.model';
 import {Comment} from '../../schema-types';
 
@@ -135,9 +138,9 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
         },
         updateQueries: {
           Comment: (prev, {mutationResult}) => {
-            const newComment: Comment = mutationResult.data.submitComment;
+            const newComment: Comment = mutationResult['data'].submitComment;
 
-            if (isDuplicateComment(newComment, prev.entry.comments)) {
+            if (isDuplicateComment(newComment, prev['entry'].comments)) {
               return prev;
             }
 
@@ -154,6 +157,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
           }
         }
       })
+        .toPromise()
         .then(() => this.newComment = null)
         .catch(errors => this.errors = errors);
     }

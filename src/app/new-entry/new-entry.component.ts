@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {Router} from '@angular/router';
 import {Angular2Apollo} from 'angular2-apollo';
 
+import 'rxjs/add/operator/toPromise';
+
 import {submitRepositoryMutation} from './new-entry.model';
 
 @Component({
@@ -28,10 +30,12 @@ export class NewEntryComponent {
       variables: {
         repoFullName: this.repoFullName,
       },
-    }).then(() => {
-      this.router.navigate(['/feed/new']);
-    }).catch((error) => {
-      this.error = error.message;
-    });
+    })
+      .toPromise()
+      .then(() => {
+        this.router.navigate(['/feed/new']);
+      }).catch((error) => {
+        this.error = error.message;
+      });
   }
 }
