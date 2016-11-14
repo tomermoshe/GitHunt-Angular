@@ -137,7 +137,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
           }
         },
         updateQueries: {
-          Comment: (prev, {mutationResult}) => {
+          Comment: (prev: any, {mutationResult}) => {
             const newComment: Comment = mutationResult['data'].submitComment;
 
             if (isDuplicateComment(newComment, prev['entry'].comments)) {

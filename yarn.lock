@@ -75,13 +75,9 @@
   version "2.0.32"
   resolved "https://registry.yarnpkg.com/@types/async/-/async-2.0.32.tgz#bb7be943784ca63d0c7b1358ce598b5f3cebc059"
 
-"@types/chai@3.4.34":
+"@types/chai":
   version "3.4.34"
   resolved "https://registry.yarnpkg.com/@types/chai/-/chai-3.4.34.tgz#d5335792823bb09cddd5e38c3d211b709183854d"
-
-"@types/es6-shim@^0.31.32":
-  version "0.31.32"
-  resolved "https://registry.yarnpkg.com/@types/es6-shim/-/es6-shim-0.31.32.tgz#8196c09e1e40ac977c713bf258090989f501d8ff"
 
 "@types/isomorphic-fetch@0.0.30":
   version "0.0.30"
@@ -257,11 +253,11 @@ angular-cli@1.0.0-beta.19-3:
     webpack-merge "^0.14.0"
     zone.js "^0.6.23"
 
-angular2-apollo@~0.7.0:
-  version "0.7.0"
-  resolved "https://registry.yarnpkg.com/angular2-apollo/-/angular2-apollo-0.7.0.tgz#bba0ecb392ebf5cfcb05a25732c1d6746fb40fd1"
+angular2-apollo@~0.8.0:
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/angular2-apollo/-/angular2-apollo-0.8.0.tgz#68d9688473ed5f66a671cc22194e53df69195e77"
   dependencies:
-    apollo-client-rxjs "~0.2.2"
+    apollo-client-rxjs "~0.2.3"
     lodash.assign "^4.0.9"
     lodash.forin "^4.2.0"
     lodash.isequal "^4.2.0"
@@ -341,19 +337,18 @@ anymatch@^1.3.0:
     arrify "^1.0.0"
     micromatch "^2.1.5"
 
-apollo-client-rxjs@~0.2.2:
-  version "0.2.2"
-  resolved "https://registry.yarnpkg.com/apollo-client-rxjs/-/apollo-client-rxjs-0.2.2.tgz#764c170b0606cb726f60104b116ef09f792315cb"
+apollo-client-rxjs@~0.2.3:
+  version "0.2.3"
+  resolved "https://registry.yarnpkg.com/apollo-client-rxjs/-/apollo-client-rxjs-0.2.3.tgz#63f17139c323a7605d521bd017b536e3a24a9d0f"
   dependencies:
     lodash.assign "^4.2.0"
     lodash.isfunction "^3.0.8"
     lodash.omit "^4.5.0"
 
-apollo-client@~0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-0.5.0.tgz#b9ec43a8e621461ff24c9fddba21446d8e1d5aa3"
+apollo-client@~0.5.1:
+  version "0.5.2"
+  resolved "https://registry.yarnpkg.com/apollo-client/-/apollo-client-0.5.2.tgz#ed7d13f9e79c031063b4c76490ca09698d879115"
   dependencies:
-    es6-promise "^4.0.3"
     graphql-anywhere "^0.2.4"
     graphql-tag "^0.1.13"
     lodash.assign "^4.0.8"
@@ -2408,10 +2403,6 @@ es6-iterator@2:
 es6-promise@^3.0.2, es6-promise@^3.2.1:
   version "3.3.1"
   resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-3.3.1.tgz#a08cdde84ccdbf34d027a1451bc91d4bcd28a613"
-
-es6-promise@^4.0.3:
-  version "4.0.5"
-  resolved "https://registry.yarnpkg.com/es6-promise/-/es6-promise-4.0.5.tgz#7882f30adde5b240ccfa7f7d78c548330951ae42"
 
 es6-symbol@^3.0.2, es6-symbol@~3.1, es6-symbol@3:
   version "3.1.0"
