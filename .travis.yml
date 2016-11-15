@@ -13,6 +13,6 @@ cache:
     # cache node modules
     - node_modules
 
-before_script:
+before_install:
   # remove unused node modules from cache
   - npm prune

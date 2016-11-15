@@ -33,7 +33,6 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   public errors: any[];
 
   private repoName: Subject<string> = new Subject<string>();
-  private paramsSub: Subscription;
   private entryObs: ApolloQueryObservable<any>;
   private entrySub: Subscription;
   private subscriptionRepoName: string;
@@ -46,6 +45,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   }
 
   public ngOnInit(): void {
+    // Fetch
     this.entryObs = this.apollo.watchQuery({
       query: commentQuery,
       variables: {
@@ -56,26 +56,28 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
       fragments: fragments['comment'].fragments(),
     });
 
+    // Subscribe
     this.entrySub = this.entryObs.subscribe(({data, loading}) => {
       this.entry = data.entry;
       this.currentUser = data.currentUser;
       this.loading = loading;
     });
 
-    this.paramsSub = this.route.params
-      .subscribe(params => {
-        const repoName: string = `${params['org']}/${params['repoName']}`;
+    // Listen to the route
+    this.route.params.subscribe(params => {
+      const repoName: string = `${params['org']}/${params['repoName']}`;
 
-        this.loading = true;
-        this.repoName.next(repoName);
+      this.loading = true;
+      this.repoName.next(repoName);
 
-        // subscribe to comments
-        if (this.subscriptionSub) {
-          this.subscriptionSub.unsubscribe();
-        }
+      // subscribe to comments
+      if (this.subscriptionSub) {
+        this.subscriptionSub.unsubscribe();
+        this.subscriptionSub = undefined;
+      }
 
-        this.subscribe(repoName);
-      });
+      this.subscribe(repoName);
+    });
   }
 
   public loadMore(): void {
@@ -89,23 +91,12 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
           offset: this.offset
         },
         updateQuery: (prev, {fetchMoreResult}) => {
-          let newComments: Comment[] = fetchMoreResult.data.entry.comments;
-          let commentCount: number = fetchMoreResult.data.entry.commentCount;
-
-          if (!fetchMoreResult.data.entry.comments) {
-            return prev;
-          }
-
-          const newEntry: Comment[] = Object.assign({}, prev.entry, {
-            comments: [...prev.entry.comments, ...newComments],
-            commentCount: commentCount
-          });
-
+          // push the new data
+          const data: Object = pushComments<Object>(prev, {fetchMoreResult});
+          // change the status
           this.loadingMoreComments = false;
 
-          return Object.assign({}, prev, {
-            entry: newEntry,
-          });
+          return data;
         }
       });
     }
@@ -126,34 +117,16 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
           commentContent: this.newComment,
         },
         fragments: fragments['comment'].fragments(),
-        optimisticResponse: {
-          __typename: 'Mutation',
-          submitComment: {
-            __typename: 'Comment',
-            id: null,
-            postedBy: this.currentUser,
-            createdAt: +new Date,
-            content: this.newComment,
-          }
-        },
+        // Make an optimistic response
+        optimisticResponse: optimisticComment(this.currentUser, this.newComment),
+        // Update the query result 
         updateQueries: {
-          Comment: (prev: any, {mutationResult}) => {
-            const newComment: Comment = mutationResult['data'].submitComment;
-
-            if (isDuplicateComment(newComment, prev['entry'].comments)) {
-              return prev;
-            }
-
+          Comment: (prev, {mutationResult}: any) => {
+            const newComment: Comment = mutationResult.data.submitComment;
+            const data: Object = pushNewComment<Object>(prev, newComment);
             this.offset++;
 
-            const newEntry: Comment[] = Object.assign({}, prev.entry, {
-              comments: [newComment, ...prev.entry.comments],
-              commentCount: (prev.entry.commentCount || 0) + 1
-            });
-
-            return Object.assign({}, prev, {
-              entry: newEntry,
-            });
+            return data;
           }
         }
       })
@@ -164,13 +137,13 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   }
 
   public ngOnDestroy(): void {
-    this.paramsSub.unsubscribe();
     this.entrySub.unsubscribe();
     this.subscriptionSub.unsubscribe();
   }
 
   private subscribe(repoName: string): void {
     this.subscriptionRepoName = repoName;
+
     this.subscriptionSub = this.apollo.subscribe({
       query: subscriptionQuery,
       variables: {repoFullName: repoName},
@@ -178,23 +151,61 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
       next: (data) => {
         const newComment: Comment = data.commentAdded;
 
-        this.entryObs.updateQuery((previousResult) => {
-          if (isDuplicateComment(newComment, previousResult.entry.comments)) {
-            return previousResult;
-          }
-
-          const newEntry: Comment[] = Object.assign({}, previousResult.entry, {
-            comments: [newComment, ...previousResult.entry.comments],
-          });
-
-          return Object.assign({}, previousResult, {
-            entry: newEntry,
-          });
-        });
+        this.entryObs.updateQuery((previousResult) => pushNewComment<Object>(previousResult, newComment));
       },
       error(err: any): void {
         console.error('err', err);
       }
     });
   }
+}
+
+
+// helper functions
+
+
+function optimisticComment(postedBy: any, content: Comment): Object {
+  return {
+    __typename: 'Mutation',
+    submitComment: {
+      __typename: 'Comment',
+      id: null,
+      postedBy,
+      content,
+      createdAt: +new Date,
+    }
+  };
+}
+
+function pushComments<T>(prev: any, {fetchMoreResult}: any): T {
+  const newComments: Comment[] = fetchMoreResult.data.entry.comments;
+  const commentCount: number = fetchMoreResult.data.entry.commentCount;
+
+  if (!fetchMoreResult.data.entry.comments) {
+    return prev;
+  }
+
+  const newEntry: Comment[] = Object.assign({}, prev.entry, {
+    comments: [...prev.entry.comments, ...newComments],
+    commentCount
+  });
+
+  return Object.assign({}, prev, {
+    entry: newEntry,
+  });
+}
+
+function pushNewComment<T>(prev: any, newComment: Comment): T {
+  if (isDuplicateComment(newComment, prev.entry.comments)) {
+    return prev;
+  }
+
+  const newEntry: Comment[] = Object.assign({}, prev.entry, {
+    comments: [newComment, ...prev.entry.comments],
+    commentCount: (prev.entry.commentCount || 0) + 1
+  });
+
+  return Object.assign({}, prev, {
+    entry: newEntry,
+  });
 }

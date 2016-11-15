@@ -3,4 +3,3 @@
 // https://www.typescriptlang.org/docs/handbook/writing-declaration-files.html
 
 /// <reference types="typed-graphql" />
-/// <reference types="@types/chai" />

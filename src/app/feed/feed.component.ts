@@ -32,6 +32,7 @@ export class FeedComponent implements OnInit, OnDestroy {
   ) {}
 
   public ngOnInit(): void {
+    // Fetch
     this.feedObs = this.apollo.watchQuery({
       query: feedQuery,
       variables: {
@@ -43,12 +44,14 @@ export class FeedComponent implements OnInit, OnDestroy {
       forceFetch: true,
     });
 
+    // Subscribe
     this.feedSub = this.feedObs.subscribe(({data, loading}) => {
       this.feed = data.feed;
       this.currentUser = data.currentUser;
       this.loading = loading;
     });
 
+    // Listen to the route
     this.route.params.subscribe((params) => {
       this.loading = true;
       this.type.next((params['type'] || 'top').toUpperCase());
@@ -70,19 +73,27 @@ export class FeedComponent implements OnInit, OnDestroy {
       variables: {
         offset: this.offset + this.itemsPerPage
       },
-      updateQuery: (prev, {fetchMoreResult}) => {
-        if (!fetchMoreResult.data) {
-          return prev;
-        }
-        return Object.assign({}, prev, {
-          feed: [...prev.feed, ...fetchMoreResult.data.feed],
-        });
-      }
-    });
-    this.offset += this.itemsPerPage;
+      updateQuery: (prev, {fetchMoreResult}) => pushEntries(prev, fetchMoreResult.data)
+    })
+      .then(() => {
+        this.offset += this.itemsPerPage;
+      });
   }
 
   public ngOnDestroy(): void {
     this.feedSub.unsubscribe();
   }
 }
+
+// helper functions
+
+function pushEntries<T>(prev: any, data: any): T {
+  if (!data) {
+    return prev;
+  }
+
+  return Object.assign({}, prev, {
+    feed: [...prev.feed, ...data.feed],
+  });
+}
+
