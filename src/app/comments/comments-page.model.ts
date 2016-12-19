@@ -1,10 +1,11 @@
-import Fragment from 'graphql-fragments';
+import {Document} from 'graphql';
+
 import gql from 'graphql-tag';
 
 export const fragments: {
-  [key: string]: Fragment
+  [key: string]: Document
 } = {
-  comment: new Fragment(gql`
+  comment: gql`
     fragment CommentsPageComment on Comment {
       id
       postedBy {
@@ -14,10 +15,10 @@ export const fragments: {
       createdAt
       content
     }
-  `),
+  `,
 };
 
-export const commentQuery: any = gql`
+export const commentQuery: Document = gql`
   query Comment($repoFullName: String!, $limit: Int, $offset: Int) {
     # Eventually move this into a no fetch query right on the entry
     # since we literally just need this info to determine whether to
@@ -46,9 +47,11 @@ export const commentQuery: any = gql`
       }
     }
   }
+
+  ${fragments['comment']}
 `;
 
-export const subscriptionQuery: any = gql`
+export const subscriptionQuery: Document = gql`
   subscription onCommentAdded($repoFullName: String!){
     commentAdded(repoFullName: $repoFullName){
       id
@@ -62,10 +65,12 @@ export const subscriptionQuery: any = gql`
   }
 `;
 
-export const submitCommentMutation: any = gql`
+export const submitCommentMutation: Document = gql`
   mutation submitComment($repoFullName: String!, $commentContent: String!) {
     submitComment(repoFullName: $repoFullName, commentContent: $commentContent) {
       ...CommentsPageComment
     }
   }
+
+  ${fragments['comment']}
 `;

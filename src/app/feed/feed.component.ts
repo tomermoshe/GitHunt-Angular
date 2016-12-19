@@ -8,7 +8,6 @@ import 'rxjs/add/operator/toPromise';
 
 import {OnVoteEvent} from './feed-entry.component';
 import {feedQuery, voteMutation} from './feed.model';
-import {fragments} from './feed-entry.model';
 
 @Component({
   selector: 'feed',
@@ -40,7 +39,6 @@ export class FeedComponent implements OnInit, OnDestroy {
         offset: this.offset,
         limit: this.itemsPerPage
       },
-      fragments: fragments['entry'].fragments(),
       forceFetch: true,
     });
 

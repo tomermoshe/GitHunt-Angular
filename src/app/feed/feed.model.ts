@@ -1,6 +1,8 @@
-import { Document } from 'graphql';
+import {Document} from 'graphql';
 
 import gql from 'graphql-tag';
+
+import {fragments} from './feed-entry.model';
 
 export const feedQuery: Document = gql`
   query Feed($type: FeedType!, $offset: Int, $limit: Int) {
@@ -11,6 +13,8 @@ export const feedQuery: Document = gql`
       ...FeedEntry
     }
   }
+
+  ${fragments['entry']}
 `;
 
 export const voteMutation: Document = gql`

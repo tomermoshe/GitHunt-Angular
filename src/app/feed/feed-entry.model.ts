@@ -1,13 +1,14 @@
-import Fragment from 'graphql-fragments';
+import {Document} from 'graphql';
+
 import gql from 'graphql-tag';
 
-import { fragments as VoteButtonsFragments } from './vote-buttons.model';
-import { fragments as RepoInfoFragments } from '../shared/repo-info.model';
+import {fragments as VoteButtonsFragments} from './vote-buttons.model';
+import {fragments as RepoInfoFragments} from '../shared/repo-info.model';
 
 export const fragments: {
-  [key: string]: Fragment
+  [key: string]: Document
 } = {
-  entry: new Fragment(gql`
+  entry: gql`
     fragment FeedEntry on Entry {
       id
       commentCount
@@ -21,5 +22,8 @@ export const fragments: {
       ...VoteButtons
       ...RepoInfo
     }
-  `, VoteButtonsFragments['entry'], RepoInfoFragments['entry']),
+    
+    ${VoteButtonsFragments['entry']}
+    ${RepoInfoFragments['entry']}
+  `,
 };

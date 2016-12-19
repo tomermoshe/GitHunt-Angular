@@ -1,15 +1,16 @@
-import Fragment from 'graphql-fragments';
+import {Document} from 'graphql';
+
 import gql from 'graphql-tag';
 
 export const fragments: {
-  [key: string]: Fragment,
+  [key: string]: Document,
 } = {
-  entry: new Fragment(gql`
+  entry: gql`
     fragment VoteButtons on Entry {
       score
       vote {
         vote_value
       }
     }
-  `),
+  `,
 };

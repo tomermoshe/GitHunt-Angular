@@ -3,7 +3,7 @@ import {Angular2Apollo} from 'angular2-apollo';
 
 import 'rxjs/add/operator/toPromise';
 
-import {commentQuery, fragments} from '../comments/comments-page.model';
+import {commentQuery} from '../comments/comments-page.model';
 import {COMMENTS_PER_QUERY} from '../comments/comments-page.component';
 
 @Component({
@@ -56,8 +56,7 @@ export class RepoInfoComponent implements OnInit {
           repoFullName,
           offset: 0,
           limit: COMMENTS_PER_QUERY,
-        },
-        fragments: fragments['comment'].fragments(),
+        }
       }).toPromise();
 
       this.prefetched = true;

@@ -6,7 +6,7 @@ import {Subject} from 'rxjs/Subject';
 
 import 'rxjs/add/operator/toPromise';
 
-import {commentQuery, submitCommentMutation, subscriptionQuery, fragments} from './comments-page.model';
+import {commentQuery, submitCommentMutation, subscriptionQuery} from './comments-page.model';
 import {Comment} from '../../schema-types';
 
 // helper function checks for duplicate comments, which we receive because we
@@ -53,7 +53,6 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
         limit: COMMENTS_PER_QUERY,
         offset: this.offset
       },
-      fragments: fragments['comment'].fragments(),
     });
 
     // Subscribe
@@ -116,7 +115,6 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
           repoFullName: repositoryName,
           commentContent: this.newComment,
         },
-        fragments: fragments['comment'].fragments(),
         // Make an optimistic response
         optimisticResponse: optimisticComment(this.currentUser, this.newComment),
         // Update the query result 
