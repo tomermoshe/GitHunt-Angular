@@ -7,7 +7,7 @@ import 'rxjs/add/operator/toPromise';
 import {submitRepositoryMutation} from './new-entry.model';
 
 @Component({
-  selector: 'new-entry',
+  selector: 'app-new-entry',
   templateUrl: 'new-entry.component.html'
 })
 export class NewEntryComponent {

@@ -1,8 +1,8 @@
-<loading *ngIf="loading"></loading>
+<app-loading *ngIf="loading"></app-loading>
 <div *ngIf="!loading">
   <div>
     <h1>Comments for <a [href]="entry.repository.html_url">{{entry.repository.full_name}}</a></h1>
-    <repo-info
+    <app-repo-info
       [fullName]="entry.repository.full_name"
       [description]="entry.repository.description"
       [stargazersCount]="entry.repository.stargazers_count"
@@ -11,7 +11,7 @@
       [userUrl]="entry.postedBy.html_url"
       [username]="entry.postedBy.login"
       [commentCount]="entry.commentCount">
-    </repo-info>
+    </app-repo-info>
     <form *ngIf="currentUser" (ngSubmit)="submitForm()">
       <div class="form-group">
         <input
@@ -40,13 +40,13 @@
        infinite-scroll
        [infiniteScrollDistance]="0.2"
        (scrolled)="loadMore()">
-    <comment
+    <app-comment
       *ngFor="let comment of entry.comments"
       [username]="comment.postedBy.login"
       [content]="comment.content"
       [createdAt]="comment.createdAt"
       [userUrl]="comment.postedBy.html_url">
-    </comment>
+    </app-comment>
   </div>
-  <loading *ngIf="loadingMoreComments"></loading>
+  <app-loading *ngIf="loadingMoreComments"></app-loading>
 </div>

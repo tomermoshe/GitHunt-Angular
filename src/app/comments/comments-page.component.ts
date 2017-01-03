@@ -17,10 +17,10 @@ function isDuplicateComment(newComment: Comment, existingComments: Comment[]): b
   return newComment.id !== null && existingComments.some(comment => newComment.id === comment.id);
 }
 
-export const COMMENTS_PER_QUERY: number = 10;
+export const COMMENTS_PER_QUERY = 10;
 
 @Component({
-  selector: 'comments-page',
+  selector: 'app-comments-page',
   templateUrl: 'comments-page.component.html'
 })
 export class CommentsPageComponent implements OnInit, OnDestroy {
@@ -64,7 +64,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
 
     // Listen to the route
     this.route.params.subscribe(params => {
-      const repoName: string = `${params['org']}/${params['repoName']}`;
+      const repoName = `${params['org']}/${params['repoName']}`;
 
       this.loading = true;
       this.repoName.next(repoName);

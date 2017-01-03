@@ -7,7 +7,7 @@ import {commentQuery} from '../comments/comments-page.model';
 import {COMMENTS_PER_QUERY} from '../comments/comments-page.component';
 
 @Component({
-  selector: 'repo-info',
+  selector: 'app-repo-info',
   templateUrl: 'repo-info.component.html'
 })
 export class RepoInfoComponent implements OnInit {

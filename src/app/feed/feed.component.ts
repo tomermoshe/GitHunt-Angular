@@ -10,7 +10,7 @@ import {OnVoteEvent} from './feed-entry.component';
 import {feedQuery, voteMutation} from './feed.model';
 
 @Component({
-  selector: 'feed',
+  selector: 'app-feed',
   templateUrl: './feed.component.html'
 })
 export class FeedComponent implements OnInit, OnDestroy {

@@ -1,14 +1,14 @@
 <p> {{ description | emojify }}</p>
 <p>
-  <info-label
+  <app-info-label
     label="Stars"
     [value]="stargazersCount">
-  </info-label>
+  </app-info-label>
   &nbsp;
-  <info-label
+  <app-info-label
     label="Issues"
     [value]="openIssuesCount">
-  </info-label>
+  </app-info-label>
   <span *ngIf="commentCount || commentCount === 0">
         &nbsp;
         <a [routerLink]="['/', org, repoName]" (mouseover)="prefetchComments(fullName)">

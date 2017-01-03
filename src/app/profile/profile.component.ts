@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs/Subscription';
 import {CurrentUserQuery} from './profile.model';
 
 @Component({
-  selector: 'profile',
+  selector: 'app-profile',
   templateUrl: 'profile.component.html'
 })
 export class ProfileComponent implements OnInit, OnDestroy {

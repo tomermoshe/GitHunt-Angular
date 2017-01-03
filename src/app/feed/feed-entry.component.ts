@@ -8,7 +8,7 @@ export interface OnVoteEvent {
 }
 
 @Component({
-  selector: 'feed-entry',
+  selector: 'app-feed-entry',
   templateUrl: 'feed-entry.component.html'
 })
 export class FeedEntryComponent {

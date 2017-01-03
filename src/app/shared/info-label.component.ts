@@ -1,7 +1,7 @@
 import {Component, Input} from '@angular/core';
 
 @Component({
-  selector: 'info-label',
+  selector: 'app-info-label',
   template: `<span class="label label-info">{{label}}: {{value}}</span>`
 })
 export class InfoLabelComponent {

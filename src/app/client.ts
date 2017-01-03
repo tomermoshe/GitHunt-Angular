@@ -36,6 +36,6 @@ const client: ApolloClient = new ApolloClient({
   }
 });
 
-export {
-  client
+export function provideClient(): ApolloClient {
+  return client;
 }

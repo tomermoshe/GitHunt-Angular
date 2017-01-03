@@ -1,11 +1,11 @@
 <div class="media">
   <div class="media-vote">
-    <vote-buttons
+    <app-vote-buttons
       [score]="entry.score"
       [vote]="entry.vote"
       [canVote]="!!currentUser"
       (onVote)="onButtonVote($event)">
-    </vote-buttons>
+    </app-vote-buttons>
   </div>
   <div class="media-left">
     <a href="#">
@@ -22,7 +22,7 @@
         {{ entry.repository.full_name }}
       </a>
     </h4>
-    <repo-info 
+    <app-repo-info 
       [fullName]="entry.repository.full_name"
       [description]="entry.repository.description"
       [stargazersCount]="entry.repository.stargazers_count"
@@ -31,6 +31,6 @@
       [userUrl]="entry.postedBy.html_url"
       [username]="entry.postedBy.login"
       [commentCount]="entry.commentCount">
-    </repo-info>
+    </app-repo-info>
   </div>
 </div>

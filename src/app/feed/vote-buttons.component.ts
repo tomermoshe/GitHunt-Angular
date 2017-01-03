@@ -3,7 +3,7 @@ import {Component, Input, Output, EventEmitter} from '@angular/core';
 import {VoteType} from '../../schema-types';
 
 @Component({
-  selector: 'vote-buttons',
+  selector: 'app-vote-buttons',
   templateUrl: 'vote-buttons.component.html'
 })
 export class VoteButtonsComponent {
