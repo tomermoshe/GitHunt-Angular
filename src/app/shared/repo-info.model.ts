@@ -1,9 +1,9 @@
-import {Document} from 'graphql';
+import {DocumentNode} from 'graphql';
 
 import gql from 'graphql-tag';
 
 export const fragments: {
-  [key: string]: Document,
+  [key: string]: DocumentNode,
 } = {
   entry: gql`
     fragment RepoInfo on Entry {

@@ -1,4 +1,4 @@
-import {Document} from 'graphql';
+import {DocumentNode} from 'graphql';
 
 import gql from 'graphql-tag';
 
@@ -6,7 +6,7 @@ import {fragments as VoteButtonsFragments} from './vote-buttons.model';
 import {fragments as RepoInfoFragments} from '../shared/repo-info.model';
 
 export const fragments: {
-  [key: string]: Document
+  [key: string]: DocumentNode
 } = {
   entry: gql`
     fragment FeedEntry on Entry {

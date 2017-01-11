@@ -1,10 +1,10 @@
-import {Document} from 'graphql';
+import {DocumentNode} from 'graphql';
 
 import gql from 'graphql-tag';
 
 import {fragments} from './feed-entry.model';
 
-export const feedQuery: Document = gql`
+export const feedQuery: DocumentNode = gql`
   query Feed($type: FeedType!, $offset: Int, $limit: Int) {
     currentUser {
       login
@@ -17,7 +17,7 @@ export const feedQuery: Document = gql`
   ${fragments['entry']}
 `;
 
-export const voteMutation: Document = gql`
+export const voteMutation: DocumentNode = gql`
   mutation vote($repoFullName: String!, $type: VoteType!) {
     vote(repoFullName: $repoFullName, type: $type) {
       score
