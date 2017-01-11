@@ -16,3 +16,7 @@ cache:
 before_install:
   # remove unused node modules from cache
   - npm prune
+
+script:
+  - npm test
+  - npm run build
