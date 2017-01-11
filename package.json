@@ -6,6 +6,7 @@
   "scripts": {
     "start": "ng serve --aot --port 3000 --proxy-config proxy.conf.json",
     "build": "ng build --aot",
+    "build:prod": "npm run build -- --prod",
     "lint": "tslint \"src/**/*.ts\"",
     "test": "npm run lint"
   },
