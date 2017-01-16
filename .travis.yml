@@ -2,21 +2,13 @@ language: node_js
 
 node_js:
   - "6"
-  - "5"
 
 notifications:
-  # disable email notification
   email: false
 
 cache:
   directories:
-    # cache node modules
     - node_modules
 
 before_install:
-  # remove unused node modules from cache
   - npm prune
-
-script:
-  - npm test
-  - npm run build:prod
