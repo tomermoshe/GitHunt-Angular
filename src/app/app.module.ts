@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { BrowserModule  } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
-import { ApolloModule } from 'angular2-apollo';
+import { ApolloModule } from 'apollo-angular';
 import { EmojifyModule } from 'angular2-emojify';
 
 import { AppComponent } from './app.component';
@@ -35,7 +35,7 @@ import { InfiniteScrollModule } from 'angular2-infinite-scroll';
     FormsModule,
     ReactiveFormsModule,
     RouterModule.forRoot(routes),
-    ApolloModule.withClient(provideClient),
+    ApolloModule.forRoot(provideClient),
     EmojifyModule,
     InfiniteScrollModule
   ],

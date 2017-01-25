@@ -1,6 +1,6 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {Angular2Apollo, ApolloQueryObservable} from 'angular2-apollo';
+import {Apollo, ApolloQueryObservable} from 'apollo-angular';
 import {Subscription} from 'rxjs/Subscription';
 import {Subject} from 'rxjs/Subject';
 
@@ -27,7 +27,7 @@ export class FeedComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private apollo: Angular2Apollo
+    private apollo: Apollo
   ) {}
 
   public ngOnInit(): void {
