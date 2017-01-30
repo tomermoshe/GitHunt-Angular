@@ -1,5 +1,5 @@
 import {Component, OnInit, Input} from '@angular/core';
-import {Angular2Apollo} from 'angular2-apollo';
+import {Apollo} from 'apollo-angular';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -39,7 +39,7 @@ export class RepoInfoComponent implements OnInit {
   public repoName: string;
   private prefetched: boolean = false;
 
-  constructor(private apollo: Angular2Apollo) {}
+  constructor(private apollo: Apollo) {}
 
   public ngOnInit(): void {
     const parts: string[] = this.fullName.split('/');

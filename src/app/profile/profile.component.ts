@@ -1,5 +1,5 @@
 import {Component, OnInit, OnDestroy} from '@angular/core';
-import {Angular2Apollo} from 'angular2-apollo';
+import {Apollo} from 'apollo-angular';
 import {Subscription} from 'rxjs/Subscription';
 
 import {CurrentUserQuery} from './profile.model';
@@ -14,7 +14,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
 
   private currentUserSub: Subscription;
 
-  constructor(private apollo: Angular2Apollo) {
+  constructor(private apollo: Apollo) {
   }
 
   public ngOnInit(): void {

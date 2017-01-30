@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {Router} from '@angular/router';
-import {Angular2Apollo} from 'angular2-apollo';
+import {Apollo} from 'apollo-angular';
 
 import 'rxjs/add/operator/toPromise';
 
@@ -15,7 +15,7 @@ export class NewEntryComponent {
   public repoFullName: string;
 
   constructor(private router: Router,
-              private apollo: Angular2Apollo) {
+              private apollo: Apollo) {
   }
 
   public submitForm(): void {
