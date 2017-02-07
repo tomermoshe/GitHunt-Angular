@@ -1,14 +1,14 @@
-import { AppComponentPage } from './app.po';
+import { AppPage } from './app.po';
 
-describe('AppComponent App', function() {
-  let page: AppComponentPage;
+describe('App', () => {
+  let page: AppPage;
 
   beforeEach(() => {
-    page = new AppComponentPage();
+    page = new AppPage();
   });
 
-  it('should display message saying app works', () => {
+  it('should have GitHunt in the navigation bar', () => {
     page.navigateTo();
-    expect(page.getParagraphText()).toEqual('<%= prefix %> works!');
+    expect(page.getNavText()).toEqual('GitHunt');
   });
 });
