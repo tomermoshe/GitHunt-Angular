@@ -1,7 +1,5 @@
 import ApolloClient, {createBatchingNetworkInterface} from 'apollo-client';
-import {Client} from 'subscriptions-transport-ws';
-
-import {addGraphQLSubscriptions} from './subscriptions';
+import {SubscriptionClient, addGraphQLSubscriptions} from 'subscriptions-transport-ws/dist/client';
 
 // Polyfill fetch
 import 'whatwg-fetch';
@@ -11,9 +9,11 @@ interface Result {
   __typename?: string;
 }
 
-const wsClient: Client = new Client('ws://localhost:8080');
+const wsClient = new SubscriptionClient('ws://localhost:3010/subscriptions', {
+  reconnect: true,
+});
 
-const networkInterface: any = createBatchingNetworkInterface({
+const networkInterface = createBatchingNetworkInterface({
   uri: '/graphql',
   batchInterval: 10,
   opts: {
@@ -21,19 +21,13 @@ const networkInterface: any = createBatchingNetworkInterface({
   }
 });
 
-const networkInterfaceWithSubscriptions: any = addGraphQLSubscriptions(
+const networkInterfaceWithSubscriptions = addGraphQLSubscriptions(
   networkInterface,
   wsClient,
 );
 
-const client: ApolloClient = new ApolloClient({
+const client = new ApolloClient({
   networkInterface: networkInterfaceWithSubscriptions,
-  dataIdFromObject: (result: Result) => {
-    if (result.id && result.__typename) {
-      return result.__typename + result.id;
-    }
-    return null;
-  }
 });
 
 export function provideClient(): ApolloClient {

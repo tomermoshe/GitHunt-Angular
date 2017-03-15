@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-beta.19-3",
+    "version": "1.0.0-rc.2",
     "name": "githunt"
   },
   "apps": [
@@ -21,7 +21,7 @@
       ],
       "scripts": [],
       "environments": {
-        "source": "environments/environment.ts",
+	"source": "environments/environment.ts",
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }

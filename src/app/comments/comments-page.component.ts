@@ -28,8 +28,8 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   public noCommentContent: boolean;
   public entry: any;
   public currentUser: any;
-  public loading: boolean = true;
-  public loadingMoreComments: boolean = false;
+  public loading = true;
+  public loadingMoreComments = false;
   public errors: any[];
 
   private repoName: Subject<string> = new Subject<string>();
@@ -37,7 +37,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
   private entrySub: Subscription;
   private subscriptionRepoName: string;
   private subscriptionSub: Subscription;
-  private offset: number = 0;
+  private offset = 0;
 
   constructor(private route: ActivatedRoute,
               private apollo: Apollo) {
@@ -117,7 +117,7 @@ export class CommentsPageComponent implements OnInit, OnDestroy {
         },
         // Make an optimistic response
         optimisticResponse: optimisticComment(this.currentUser, this.newComment),
-        // Update the query result 
+        // Update the query result
         updateQueries: {
           Comment: (prev, {mutationResult}: any) => {
             const newComment: Comment = mutationResult.data.submitComment;

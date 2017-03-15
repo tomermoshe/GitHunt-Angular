@@ -9,7 +9,7 @@ import {CurrentUserQuery} from './profile.model';
   templateUrl: 'profile.component.html'
 })
 export class ProfileComponent implements OnInit, OnDestroy {
-  public loading: boolean = true;
+  public loading = true;
   public currentUser: any;
 
   private currentUserSub: Subscription;

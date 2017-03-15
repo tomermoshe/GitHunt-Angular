@@ -37,7 +37,7 @@ export class RepoInfoComponent implements OnInit {
 
   public org: string;
   public repoName: string;
-  private prefetched: boolean = false;
+  private prefetched = false;
 
   constructor(private apollo: Apollo) {}
 
