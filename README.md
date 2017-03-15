@@ -1,5 +1,7 @@
 # GitHunt Angular2
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/apollographql/GitHunt-Angular.svg)](https://greenkeeper.io/)
+
 An example of a client-side app built with Angular2 and Apollo Client.
 
 [![Get on Slack](https://img.shields.io/badge/slack-join-orange.svg)](http://www.apollostack.com/#slack)
