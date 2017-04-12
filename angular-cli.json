@@ -1,6 +1,6 @@
 {
   "project": {
-    "version": "1.0.0-rc.2",
+    "version": "1.0.0",
     "name": "githunt"
   },
   "apps": [
@@ -13,6 +13,7 @@
       "index": "index.html",
       "main": "main.ts",
       "test": "test.ts",
+      "polyfills": "polyfills.ts",
       "tsconfig": "tsconfig.json",
       "prefix": "app",
       "mobile": false,
@@ -20,15 +21,13 @@
         "styles.css"
       ],
       "scripts": [],
+      "environmentSource": "environments/environment.ts",
       "environments": {
-	"source": "environments/environment.ts",
         "dev": "environments/environment.ts",
         "prod": "environments/environment.prod.ts"
       }
     }
   ],
-  "addons": [],
-  "packages": [],
   "defaults": {
     "styleExt": "css",
     "prefixInterfaces": false,
